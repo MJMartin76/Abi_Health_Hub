@@ -1,0 +1,1502 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Abigail's Health Hub</title>
+    <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&display=swap"
+        rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Atkinson Hyperlegible', -apple-system, sans-serif;
+            background: linear-gradient(135deg, #e8f5e9 0%, #f1f8e9 50%, #fff9e6 100%);
+            min-height: 100vh;
+        }
+
+        header {
+            background: linear-gradient(135deg, #66bb6a 0%, #81c784 100%);
+            padding: 1.5rem 2rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        header h1 {
+            color: white;
+            font-size: 2rem;
+            font-weight: 700;
+            text-align: center;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+            margin: 0;
+        }
+
+        header p {
+            color: rgba(255, 255, 255, 0.95);
+            font-size: 1.1rem;
+            text-align: center;
+            margin: 0.5rem 0 0 0;
+        }
+
+        .container {
+            display: flex;
+            min-height: calc(100vh - 120px);
+        }
+
+        nav {
+            width: 280px;
+            background: white;
+            box-shadow: 4px 0 12px rgba(0, 0, 0, 0.05);
+            padding: 2rem 0;
+            position: sticky;
+            top: 120px;
+            height: fit-content;
+            max-height: calc(100vh - 140px);
+            overflow-y: auto;
+        }
+
+        nav button {
+            width: 100%;
+            padding: 1rem 1.5rem;
+            border: none;
+            background: transparent;
+            color: #2e7d32;
+            font-size: 1.1rem;
+            font-weight: 500;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            transition: all 0.3s ease;
+            border-left: 5px solid transparent;
+            text-align: left;
+            font-family: 'Atkinson Hyperlegible', sans-serif;
+        }
+
+        nav button:hover {
+            background: rgba(102, 187, 106, 0.1);
+        }
+
+        nav button.active {
+            background: linear-gradient(135deg, #66bb6a 0%, #81c784 100%);
+            color: white;
+            font-weight: 700;
+            border-left: 5px solid #2e7d32;
+        }
+
+        nav button .icon {
+            font-size: 1.5rem;
+        }
+
+        main {
+            flex: 1;
+            padding: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .page {
+            display: none;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        .card {
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+            margin-bottom: 2rem;
+        }
+
+        .card-border-green {
+            border: 3px solid #4caf50;
+        }
+
+        .card-border-blue {
+            border: 3px solid #2196f3;
+        }
+
+        .card-border-orange {
+            border: 3px solid #ff9800;
+        }
+
+        .card-border-purple {
+            border: 3px solid #9c27b0;
+        }
+
+        .card-border-red {
+            border: 3px solid #f44336;
+        }
+
+        h2 {
+            font-size: 2.5rem;
+            color: #2e7d32;
+            margin-bottom: 1.5rem;
+            font-weight: 700;
+        }
+
+        h3 {
+            font-size: 1.8rem;
+            color: #2e7d32;
+            margin: 2rem 0 1rem 0;
+            font-weight: 700;
+        }
+
+        h4 {
+            font-size: 1.4rem;
+            margin: 1rem 0 0.5rem 0;
+            font-weight: 700;
+        }
+
+        p {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            color: #424242;
+        }
+
+        ul,
+        ol {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: #424242;
+            padding-left: 1.5rem;
+        }
+
+        li {
+            margin-bottom: 0.5rem;
+        }
+
+        .schedule-block {
+            background: #e8f5e9;
+            border-left: 6px solid #66bb6a;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .schedule-block.rest {
+            background: #e3f2fd;
+            border-left-color: #42a5f5;
+        }
+
+        .schedule-block.meal {
+            background: #fff3e0;
+            border-left-color: #ffa726;
+        }
+
+        .schedule-time {
+            font-size: 1rem;
+            color: #666;
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .schedule-title {
+            font-size: 1.3rem;
+            color: #2e7d32;
+            margin: 0 0 0.5rem 0;
+            font-weight: 700;
+        }
+
+        .schedule-details {
+            font-size: 1.05rem;
+            color: #424242;
+            line-height: 1.6;
+        }
+
+        .alert-box {
+            background: linear-gradient(135deg, #fff3e0, #ffe0b2);
+            border: 3px solid #ff9800;
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .alert-box h3 {
+            color: #e65100;
+            margin: 0 0 1rem 0;
+        }
+
+        .day-selector {
+            display: flex;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+            margin-bottom: 2rem;
+        }
+
+        .day-button {
+            padding: 1rem 1.5rem;
+            border: 3px solid #e0e0e0;
+            border-radius: 12px;
+            background: white;
+            color: #666;
+            font-size: 1.1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-family: 'Atkinson Hyperlegible', sans-serif;
+        }
+
+        .day-button.active {
+            border-color: #4caf50;
+            background: rgba(76, 175, 80, 0.13);
+            color: #4caf50;
+            font-weight: 700;
+        }
+
+        .day-button.today {
+            position: relative;
+        }
+
+        .day-button.today::after {
+            content: '●';
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: #ff9800;
+            color: white;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+        }
+
+        .checkbox-list {
+            display: grid;
+            gap: 0.75rem;
+        }
+
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            background: #fafafa;
+            border-radius: 8px;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: all 0.2s ease;
+        }
+
+        .checkbox-item.checked {
+            background: rgba(76, 175, 80, 0.13);
+            border-color: #4caf50;
+        }
+
+        .checkbox-item input[type="checkbox"] {
+            width: 24px;
+            height: 24px;
+            cursor: pointer;
+            accent-color: #4caf50;
+        }
+
+        .checkbox-item label {
+            font-size: 1.1rem;
+            cursor: pointer;
+            flex: 1;
+        }
+
+        .checkbox-item.checked label {
+            color: #4caf50;
+            font-weight: 600;
+            text-decoration: line-through;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+
+            nav {
+                width: 100%;
+                position: static;
+                max-height: none;
+            }
+
+            nav button {
+                font-size: 1rem;
+                padding: 0.75rem 1rem;
+            }
+
+            h2 {
+                font-size: 2rem;
+            }
+
+            .schedule-block {
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>🌿 Abigail's Health Hub</h1>
+        <p>Your Daily Guide to Feeling Better</p>
+    </header>
+
+    <div class="container">
+        <nav>
+            <button class="nav-btn active" data-page="home">
+                <span class="icon">🏠</span>
+                <span>Home</span>
+            </button>
+            <button class="nav-btn" data-page="schedule">
+                <span class="icon">📅</span>
+                <span>My Schedule</span>
+            </button>
+            <button class="nav-btn" data-page="personal-care">
+                <span class="icon">💚</span>
+                <span>Personal Care</span>
+            </button>
+            <button class="nav-btn" data-page="meals">
+                <span class="icon">🍽️</span>
+                <span>Meal Plans</span>
+            </button>
+            <button class="nav-btn" data-page="health-info">
+                <span class="icon">📚</span>
+                <span>My Health Info</span>
+            </button>
+            <button class="nav-btn" data-page="tracker">
+                <span class="icon">✅</span>
+                <span>Daily Tracker</span>
+            </button>
+            <button class="nav-btn" data-page="notes">
+                <span class="icon">📝</span>
+                <span>Weekly Notes</span>
+            </button>
+            <button class="nav-btn" data-page="tips">
+                <span class="icon">💡</span>
+                <span>Tips & Reminders</span>
+            </button>
+            <button class="nav-btn" data-page="emergency">
+                <span class="icon">🚨</span>
+                <span>When to Tell Mindy</span>
+            </button>
+        </nav>
+
+        <main>
+            <!-- HOME PAGE -->
+            <div id="home" class="page active">
+                <div class="card card-border-green">
+                    <h2>Welcome, Abigail! 💪</h2>
+                    <div class="alert-box"
+                        style="border-color: #4caf50; background: linear-gradient(135deg, rgba(76, 175, 80, 0.13), rgba(76, 175, 80, 0.07));">
+                        <h3 style="color: #4caf50; font-size: 1.8rem;">Today is <span id="current-day"></span></h3>
+                        <p style="font-size: 1.4rem; font-weight: 600; margin: 0;" id="schedule-type"></p>
+                    </div>
+                </div>
+
+                <div class="alert-box">
+                    <h3>💡 Daily Reminder</h3>
+                    <ul>
+                        <li><strong>Drink water constantly</strong> - 80-100 oz today!</li>
+                        <li><strong>Movement is safe</strong> - Your body is healing</li>
+                        <li><strong>Only 6 hours lying down</strong> - Rest in a chair otherwise</li>
+                        <li><strong>No eating after 6 PM</strong> - Helps your hormones</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- SCHEDULE PAGE -->
+            <div id="schedule" class="page">
+                <h2>📅 My Weekly Schedule</h2>
+
+                <div class="card">
+                    <p style="margin-bottom: 1rem;">Select a day to view the schedule:</p>
+                    <div class="day-selector">
+                        <button class="day-button" data-day="Monday">Monday</button>
+                        <button class="day-button" data-day="Tuesday">Tuesday</button>
+                        <button class="day-button" data-day="Wednesday">Wednesday</button>
+                        <button class="day-button" data-day="Thursday">Thursday</button>
+                        <button class="day-button" data-day="Friday">Friday</button>
+                        <button class="day-button" data-day="Saturday">Saturday</button>
+                        <button class="day-button" data-day="Sunday">Sunday</button>
+                    </div>
+                </div>
+
+                <div id="schedule-content"></div>
+            </div>
+
+            <!-- PERSONAL CARE PAGE -->
+            <div id="personal-care" class="page">
+                <h2>💚 Personal Care Guide</h2>
+
+                <div class="alert-box">
+                    <p><strong>Important:</strong> These are step-by-step instructions for daily hygiene. Follow this
+                        guide every day. Personal care is not optional - it's part of staying healthy!</p>
+                </div>
+
+                <div class="card card-border-green">
+                    <h3>🌅 Daily Morning Hygiene Routine</h3>
+                    <ol>
+                        <li>Wake up gently - take 3 deep breaths</li>
+                        <li>Sit up slowly, stretch</li>
+                        <li>Put on compression socks FIRST (doctor's orders)</li>
+                        <li>Use bathroom</li>
+                        <li>Wash face with gentle cleanser, apply moisturizer</li>
+                        <li>Brush teeth for 2 minutes (use timer)</li>
+                        <li>Comb hair, pull back from face</li>
+                        <li>Get dressed in clean clothes</li>
+                        <li>Apply deodorant to BOTH underarms</li>
+                        <li>Drink 16 oz water with lemon</li>
+                    </ol>
+                </div>
+
+                <div class="card card-border-blue">
+                    <h3>🚿 Shower Routine (Use Shower Stool)</h3>
+                    <p><strong>How often:</strong> Minimum every other day (Mon/Wed/Fri/Sun), better every day</p>
+                    <ol>
+                        <li>Gather supplies and place shower stool</li>
+                        <li>Sit on shower stool safely</li>
+                        <li>Wet entire body including hair</li>
+                        <li>Shampoo: Quarter-sized amount, massage scalp, rinse thoroughly</li>
+                        <li>Condition: Apply mid-length to ends, let sit 1-2 min, rinse</li>
+                        <li>Wash body: neck/chest → underarms (scrub well!) → arms → belly/back → private areas → legs →
+                            feet</li>
+                        <li>Rinse entire body thoroughly</li>
+                        <li>Dry off completely (including between toes)</li>
+                        <li>Apply moisturizer, put on clean clothes</li>
+                        <li>Apply deodorant, comb hair</li>
+                    </ol>
+                </div>
+
+                <div class="card card-border-orange">
+                    <h3>🚽 Bathroom Hygiene</h3>
+                    <h4>After urinating:</h4>
+                    <p>Use 3-4 squares toilet paper (folded), wipe front to back, total 6-8 squares max, flush, wash
+                        hands for 20 seconds.</p>
+
+                    <h4>After bowel movement:</h4>
+                    <p>Use 4-5 squares (folded), wipe front to back, repeat if needed (2-3 wipes usually), total 10-15
+                        squares max, use flushable wipe for final cleaning, flush, wash hands thoroughly.</p>
+                </div>
+
+                <div class="card card-border-purple">
+                    <h3>😴 Evening Hygiene Routine</h3>
+                    <ol>
+                        <li>Use bathroom</li>
+                        <li>Brush teeth for 2 minutes, floss, use mouthwash</li>
+                        <li>Wash face with cleanser, apply night moisturizer</li>
+                        <li>Wash feet (warm water, soap, dry completely)</li>
+                        <li>Apply thick moisturizer to feet, put on clean socks</li>
+                        <li>Comb hair, secure for sleeping</li>
+                        <li>Remove compression socks, set out for morning</li>
+                    </ol>
+                </div>
+
+                <div class="card card-border-red">
+                    <h3>👕 When to Change Clothes</h3>
+                    <ul>
+                        <li><strong>Underwear:</strong> Change EVERY day</li>
+                        <li><strong>Socks:</strong> Change EVERY day</li>
+                        <li><strong>Shirts:</strong> Change every 1-2 days or if sweaty/dirty</li>
+                        <li><strong>Pants:</strong> Can wear 2-3 days if clean</li>
+                        <li><strong>Pajamas:</strong> Change every 2-3 days</li>
+                        <li><strong>Rule:</strong> If you're not sure if clothes are clean, they're NOT clean - change
+                            them</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- MEALS PAGE -->
+            <div id="meals" class="page">
+                <h2>🍽️ Meal Plans & Recipes</h2>
+
+                <div class="alert-box">
+                    <h3>Why This Diet Matters</h3>
+                    <p><strong>For PCOS:</strong> Low glycemic foods prevent blood sugar spikes, balanced meals improve
+                        insulin sensitivity, regular meal timing helps regulate hormones.</p>
+                    <p><strong>For Gout:</strong> Low-purine foods prevent uric acid buildup, high water intake flushes
+                        uric acid, anti-inflammatory foods reduce joint pain.</p>
+                    <p><strong>No eggs:</strong> You're allergic - never eat eggs!</p>
+                </div>
+
+                <div class="card card-border-green">
+                    <h3>🍳 Breakfast Options (~500-600 cal)</h3>
+                    <h4>Steel-Cut Oats Bowl</h4>
+                    <p>1 cup cooked steel-cut oats, 1/2 cup blueberries, 1 tbsp almond butter, 1 tsp cinnamon, drizzle
+                        of honey, green tea</p>
+
+                    <h4>Smoothie Bowl</h4>
+                    <p>Blend: 1 banana, 1 cup berries, 1 cup spinach, 1 cup almond milk, 2 tbsp chia seeds, 1 tbsp
+                        almond butter. Top with: sliced fruit, nuts, coconut flakes</p>
+
+                    <h4>Avocado Toast</h4>
+                    <p>2 slices whole grain toast, 1 mashed avocado with lemon, sliced tomato and cucumber, side of
+                        berries</p>
+
+                    <h4>Greek Yogurt Parfait</h4>
+                    <p>1 cup plain Greek yogurt, 1/2 cup mixed berries, 2 tbsp ground flaxseed, 1 tbsp honey, handful of
+                        almonds</p>
+                </div>
+
+                <div class="card card-border-blue">
+                    <h3>🥗 Lunch Options (~600-700 cal)</h3>
+                    <h4>Chicken Quinoa Bowl</h4>
+                    <p>4 oz grilled chicken, 1 cup cooked quinoa, large mixed salad, roasted vegetables, olive oil
+                        dressing</p>
+
+                    <h4>Turkey Wrap</h4>
+                    <p>Whole grain wrap, 4 oz turkey breast, hummus, lettuce, tomato, cucumber, carrots, avocado</p>
+
+                    <h4>Lentil Soup</h4>
+                    <p>Large bowl of lentil vegetable soup, side of whole grain bread, small side salad</p>
+
+                    <h4>Buddha Bowl</h4>
+                    <p>1 cup brown rice, 1/2 cup roasted chickpeas, roasted sweet potato, steamed broccoli, tahini
+                        dressing</p>
+                </div>
+
+                <div class="card card-border-purple">
+                    <h3>🍽️ Dinner Options (~600-700 cal)</h3>
+                    <h4>Baked Chicken with Vegetables</h4>
+                    <p>4 oz baked chicken breast, 1 cup roasted cauliflower, 1/2 cup brown rice, large leafy greens</p>
+
+                    <h4>Turkey Stir-Fry</h4>
+                    <p>4 oz ground turkey, stir-fried broccoli, bell peppers, snap peas, carrots, cauliflower rice,
+                        ginger and garlic</p>
+
+                    <h4>Baked White Fish</h4>
+                    <p>4 oz baked cod or tilapia, steamed broccoli and green beans, small sweet potato, leafy green
+                        salad</p>
+
+                    <h4>Vegetarian Chili</h4>
+                    <p>Large bowl of vegetarian chili, top with avocado, side of mixed greens</p>
+                </div>
+
+                <div class="card card-border-orange">
+                    <h3>🍎 Snack Options (~250-300 cal)</h3>
+                    <ul>
+                        <li>Apple slices with 2 tbsp almond butter</li>
+                        <li>Baby carrots and cucumber with 1/4 cup hummus</li>
+                        <li>1 cup plain Greek yogurt with 1/2 cup berries</li>
+                        <li>Handful of almonds and dried cranberries (no sugar added)</li>
+                        <li>Rice cake with 1 tbsp almond butter and sliced banana</li>
+                    </ul>
+                </div>
+
+                <div class="card card-border-red">
+                    <h3>🚫 Foods to AVOID</h3>
+                    <h4>For Gout (High Purine):</h4>
+                    <ul>
+                        <li>Organ meats, red meat (beef, pork, lamb)</li>
+                        <li>Certain seafood (anchovies, sardines, mackerel)</li>
+                        <li>Bacon, sausage, hot dogs, alcohol</li>
+                    </ul>
+                    <h4>For PCOS (High Glycemic):</h4>
+                    <ul>
+                        <li>White bread, white rice, white pasta</li>
+                        <li>Sugary drinks and sodas, candy, cookies, pastries</li>
+                        <li>Processed foods and fast food</li>
+                    </ul>
+                </div>
+
+                <div class="card card-border-green">
+                    <h3>💧 Hydration Goal: 80-100 oz Water Daily</h3>
+                    <ul>
+                        <li><strong>Morning (8:30 AM - 12:30 PM):</strong> 32 oz minimum</li>
+                        <li><strong>Afternoon (12:30 PM - 6:00 PM):</strong> 32 oz minimum</li>
+                        <li><strong>Evening (6:00 PM - 10:00 PM):</strong> 16-24 oz</li>
+                        <li><strong>During exercise:</strong> 8-16 oz per hour</li>
+                        <li><strong>Cherry juice:</strong> 1 glass per day helps reduce gout symptoms!</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- HEALTH INFO PAGE -->
+            <div id="health-info" class="page">
+                <h2>📚 Understanding My Health</h2>
+
+                <div class="card card-border-green">
+                    <h3>😴 Chronic Fatigue</h3>
+                    <ul>
+                        <li>Your body needs structured rest (6 hours lying down) AND structured activity</li>
+                        <li>Lying in bed all day makes fatigue WORSE, not better</li>
+                        <li>Regular movement actually improves energy over time</li>
+                        <li>Balance is key: rest when scheduled, stay active otherwise</li>
+                    </ul>
+                </div>
+
+                <div class="card card-border-blue">
+                    <h3>🔬 PCOS (Polycystic Ovary Syndrome)</h3>
+                    <ul>
+                        <li>A hormonal condition affecting ovaries, insulin, and metabolism</li>
+                        <li>Exercise helps: Regular movement improves insulin sensitivity</li>
+                        <li>Diet matters: Low glycemic foods prevent blood sugar spikes</li>
+                        <li>Regular routine helps: Consistent meal/sleep times support hormones</li>
+                        <li>No eating after 6 PM: Helps regulate hormones and improve sleep</li>
+                    </ul>
+                </div>
+
+                <div class="card card-border-orange">
+                    <h3>🦶 Gout</h3>
+                    <ul>
+                        <li>Caused by uric acid buildup in joints, causes pain and inflammation</li>
+                        <li>Diet is KEY: Avoid high-purine foods (red meat, certain seafood)</li>
+                        <li>Hydration is CRITICAL: 80-100 oz water daily flushes uric acid</li>
+                        <li>Movement helps: Gentle exercise improves circulation</li>
+                        <li>Tremors: Related to gout inflammation and nervous system response</li>
+                    </ul>
+                </div>
+
+                <div class="card card-border-purple">
+                    <h3>🧠 Trauma Response & Nervous System Retraining</h3>
+                    <ul>
+                        <li>Your brain learned "movement = pain" when gout was severe</li>
+                        <li>This created a protective fear response</li>
+                        <li>Your body sometimes trembles as a nervous system response</li>
+                        <li>You're retraining: PT, speech, and OT teach your brain movement is safe</li>
+                        <li>This is TEMPORARY: With consistent practice, your nervous system will calm</li>
+                        <li>You are NOT broken: Your body was protecting you; now you're teaching it to trust</li>
+                        <li>Every exercise session is PROOF: Movement doesn't cause pain anymore. You're safe.</li>
+                    </ul>
+                </div>
+
+                <div class="alert-box"
+                    style="border-color: #4caf50; background: linear-gradient(135deg, #e8f5e9, #c8e6c9);">
+                    <h3 style="color: #2e7d32;">💪 You Are Healing</h3>
+                    <p>Managing multiple chronic conditions while retraining your nervous system takes incredible
+                        courage and strength. Every day you follow this schedule, you're building a healthier, stronger
+                        you. Progress, not perfection. You've got this!</p>
+                </div>
+            </div>
+
+            <!-- TRACKER PAGE -->
+            <div id="tracker" class="page">
+                <h2>✅ Daily Tracker</h2>
+
+                <div class="alert-box">
+                    <p>Check off each task as you complete it today. Celebrate each checkmark - you're taking care of
+                        yourself!</p>
+                </div>
+
+                <div class="card card-border-green">
+                    <h3>Morning Hygiene</h3>
+                    <div class="checkbox-list" id="morning-checks"></div>
+                </div>
+
+                <div class="card card-border-orange">
+                    <h3>Meals & Hydration</h3>
+                    <div class="checkbox-list" id="meals-checks"></div>
+                </div>
+
+                <div class="card card-border-blue">
+                    <h3>Exercise & Therapy</h3>
+                    <div class="checkbox-list" id="exercise-checks"></div>
+                </div>
+
+                <div class="card card-border-purple">
+                    <h3>Rest Periods (Lying Down)</h3>
+                    <div class="checkbox-list" id="rest-checks"></div>
+                </div>
+
+                <div class="card card-border-green">
+                    <h3>Evening Hygiene</h3>
+                    <div class="checkbox-list" id="evening-checks"></div>
+                </div>
+
+                <div class="card card-border-orange">
+                    <h3>📊 Calorie Tracker</h3>
+                    <p style="margin-bottom: 1.5rem;">Track what you ate today and the calories in each meal. Goal:
+                        2,000-2,200 calories per day.</p>
+
+                    <div style="display: grid; gap: 1.5rem;">
+                        <!-- Breakfast -->
+                        <div
+                            style="background: #fff3e0; padding: 1.5rem; border-radius: 12px; border: 2px solid #ff9800;">
+                            <h4 style="color: #ff9800; margin: 0 0 1rem 0;">🍳 Breakfast (~500-600 cal)</h4>
+                            <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: #424242;">What
+                                I ate:</label>
+                            <input type="text" id="breakfast-food"
+                                placeholder="e.g., Steel-cut oats with berries and almond butter"
+                                style="width: 100%; padding: 0.75rem; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 1.1rem; font-family: 'Atkinson Hyperlegible', sans-serif; margin-bottom: 1rem;">
+
+                            <label
+                                style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: #424242;">Calories:</label>
+                            <input type="number" id="breakfast-calories" placeholder="500" min="0"
+                                style="width: 150px; padding: 0.75rem; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 1.1rem; font-family: 'Atkinson Hyperlegible', sans-serif;">
+                        </div>
+
+                        <!-- Snack -->
+                        <div
+                            style="background: #f3e5f5; padding: 1.5rem; border-radius: 12px; border: 2px solid #9c27b0;">
+                            <h4 style="color: #9c27b0; margin: 0 0 1rem 0;">🍎 Snack (~250-300 cal)</h4>
+                            <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: #424242;">What
+                                I ate:</label>
+                            <input type="text" id="snack-food" placeholder="e.g., Apple slices with almond butter"
+                                style="width: 100%; padding: 0.75rem; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 1.1rem; font-family: 'Atkinson Hyperlegible', sans-serif; margin-bottom: 1rem;">
+
+                            <label
+                                style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: #424242;">Calories:</label>
+                            <input type="number" id="snack-calories" placeholder="250" min="0"
+                                style="width: 150px; padding: 0.75rem; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 1.1rem; font-family: 'Atkinson Hyperlegible', sans-serif;">
+                        </div>
+
+                        <!-- Lunch -->
+                        <div
+                            style="background: #e8f5e9; padding: 1.5rem; border-radius: 12px; border: 2px solid #4caf50;">
+                            <h4 style="color: #4caf50; margin: 0 0 1rem 0;">🥗 Lunch (~600-700 cal)</h4>
+                            <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: #424242;">What
+                                I ate:</label>
+                            <input type="text" id="lunch-food" placeholder="e.g., Chicken quinoa bowl with vegetables"
+                                style="width: 100%; padding: 0.75rem; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 1.1rem; font-family: 'Atkinson Hyperlegible', sans-serif; margin-bottom: 1rem;">
+
+                            <label
+                                style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: #424242;">Calories:</label>
+                            <input type="number" id="lunch-calories" placeholder="650" min="0"
+                                style="width: 150px; padding: 0.75rem; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 1.1rem; font-family: 'Atkinson Hyperlegible', sans-serif;">
+                        </div>
+
+                        <!-- Dinner -->
+                        <div
+                            style="background: #e3f2fd; padding: 1.5rem; border-radius: 12px; border: 2px solid #2196f3;">
+                            <h4 style="color: #2196f3; margin: 0 0 1rem 0;">🍽️ Dinner (~600-700 cal)</h4>
+                            <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: #424242;">What
+                                I ate:</label>
+                            <input type="text" id="dinner-food"
+                                placeholder="e.g., Baked chicken with roasted vegetables and brown rice"
+                                style="width: 100%; padding: 0.75rem; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 1.1rem; font-family: 'Atkinson Hyperlegible', sans-serif; margin-bottom: 1rem;">
+
+                            <label
+                                style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: #424242;">Calories:</label>
+                            <input type="number" id="dinner-calories" placeholder="650" min="0"
+                                style="width: 150px; padding: 0.75rem; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 1.1rem; font-family: 'Atkinson Hyperlegible', sans-serif;">
+                        </div>
+                    </div>
+
+                    <!-- Total Display -->
+                    <div
+                        style="background: linear-gradient(135deg, #66bb6a, #81c784); color: white; padding: 2rem; border-radius: 12px; margin-top: 2rem; text-align: center;">
+                        <h3 style="color: white; margin: 0 0 0.5rem 0; font-size: 1.6rem;">Total Calories Today</h3>
+                        <div style="font-size: 3rem; font-weight: 700; margin: 0.5rem 0;" id="total-calories">0</div>
+                        <div style="font-size: 1.2rem; opacity: 0.95; margin-top: 0.5rem;">
+                            Goal: 2,000-2,200 calories
+                        </div>
+                        <div id="calorie-status"
+                            style="font-size: 1.3rem; font-weight: 600; margin-top: 1rem; padding: 1rem; background: rgba(255,255,255,0.2); border-radius: 8px;">
+                            Enter your meals above
+                        </div>
+                    </div>
+                </div>
+
+                <div class="alert-box"
+                    style="border-color: #4caf50; background: linear-gradient(135deg, #e8f5e9, #c8e6c9); text-align: center;">
+                    <h3 style="color: #2e7d32;">🎉 Great Job Today, Abigail!</h3>
+                    <p>Every checked box is progress. Every day you follow this schedule, you're taking care of your
+                        body and building healthy habits. Be proud of yourself!</p>
+                </div>
+            </div>
+
+            <!-- NOTES PAGE -->
+            <div id="notes" class="page">
+                <h2>📝 Weekly Notes & Reflection</h2>
+
+                <div class="alert-box">
+                    <p>Use this space to track your progress each week. Write down what's working, what's challenging,
+                        and what you're proud of. Print this page or write in a journal!</p>
+                </div>
+
+                <div class="card card-border-green">
+                    <h3>Energy Patterns</h3>
+                    <p><strong>Best time of day:</strong> _______________________</p>
+                    <p><strong>Worst time of day:</strong> _______________________</p>
+                    <p><strong>Activities that help:</strong> _______________________</p>
+                    <p><strong>Activities that drain:</strong> _______________________</p>
+                </div>
+
+                <div class="card card-border-orange">
+                    <h3>Gout & Tremor Tracking</h3>
+                    <p><strong>Joint pain level (1-10):</strong> _______________________</p>
+                    <p><strong>Tremor severity (1-10):</strong> _______________________</p>
+                    <p><strong>What triggered tremors:</strong> _______________________</p>
+                    <p><strong>What helped calm tremors:</strong> _______________________</p>
+                    <p><strong>Water intake today:</strong> _______ oz</p>
+                </div>
+
+                <div class="card card-border-blue">
+                    <h3>Therapy Progress</h3>
+                    <p><strong>Speech therapy wins:</strong> _______________________</p>
+                    <p><strong>OT exercises completed:</strong> _______________________</p>
+                    <p><strong>PT improvements:</strong> _______________________</p>
+                    <p><strong>Skills I'm mastering:</strong> _______________________</p>
+                </div>
+
+                <div class="card card-border-purple">
+                    <h3>Goals for Next Week</h3>
+                    <p><strong>1.</strong> _______________________</p>
+                    <p><strong>2.</strong> _______________________</p>
+                    <p><strong>3.</strong> _______________________</p>
+                </div>
+            </div>
+
+            <!-- TIPS PAGE -->
+            <div id="tips" class="page">
+                <h2>💡 Tips & Success Strategies</h2>
+
+                <div class="card card-border-green">
+                    <h3>😴 Rest is Non-Negotiable</h3>
+                    <ul>
+                        <li>Don't skip rest periods even on "good energy" days</li>
+                        <li>Your body needs scheduled recovery to prevent crashes</li>
+                        <li>Rest is PRODUCTIVE - it's how you heal and build capacity</li>
+                    </ul>
+                </div>
+
+                <div class="card card-border-orange">
+                    <h3>🕕 Stop Eating by 6 PM</h3>
+                    <ul>
+                        <li>Allows 3 hours for digestion before bed</li>
+                        <li>Improves sleep quality significantly</li>
+                        <li>Helps hormone balance (PCOS)</li>
+                        <li>Reduces gout flare risk</li>
+                    </ul>
+                </div>
+
+                <div class="card card-border-blue">
+                    <h3>💪 Movement is Medicine</h3>
+                    <ul>
+                        <li>Exercise is teaching your brain that movement is safe</li>
+                        <li>Your body was protecting you; now you're retraining it to trust</li>
+                        <li>Every exercise session is PROOF you're healing</li>
+                        <li>If tremors start, breathe deeply and slow down</li>
+                    </ul>
+                </div>
+
+                <div class="card card-border-blue" style="border-color: #00bcd4;">
+                    <h3>💧 Hydration is Critical</h3>
+                    <ul>
+                        <li>80-100 oz water daily (VERY important for gout)</li>
+                        <li>Dehydration triggers gout flares</li>
+                        <li>Water helps flush uric acid from body</li>
+                        <li>Cherry juice helps reduce gout symptoms</li>
+                    </ul>
+                </div>
+
+                <div class="alert-box" style="border-color: #ff9800;">
+                    <h3>🌟 Remember This</h3>
+                    <p style="font-size: 1.3rem;">Your brain learned "movement = pain" to protect you. Now, with
+                        consistent practice, you're teaching it a new truth: <strong>"Movement is safe. My body is
+                            capable. I am healing."</strong> Every day you follow this schedule is proof of your
+                        strength and courage.</p>
+                </div>
+            </div>
+
+            <!-- EMERGENCY PAGE -->
+            <div id="emergency" class="page">
+                <h2 style="color: #c62828;">🚨 When to Tell Mindy Immediately</h2>
+
+                <div class="card card-border-red" style="background: linear-gradient(135deg, #ffebee, #ffcdd2);">
+                    <h3 style="color: #c62828;">⚠️ Tell Mindy Right Away If:</h3>
+                    <ul style="color: #c62828; font-weight: 600; font-size: 1.2rem;">
+                        <li>You have severe joint pain or swelling (possible gout flare)</li>
+                        <li>Your tremors become uncontrollable</li>
+                        <li>You feel very dizzy or faint</li>
+                        <li>You fall or injure yourself</li>
+                        <li>You feel confused or disoriented</li>
+                        <li>You haven't urinated in 8+ hours (dehydration)</li>
+                        <li>You have severe pain anywhere</li>
+                        <li>You feel emotionally overwhelmed or unsafe</li>
+                        <li>You notice new or unusual symptoms</li>
+                    </ul>
+                </div>
+
+                <div class="card card-border-green">
+                    <h3>💚 When to Talk to Mindy (Not Emergency)</h3>
+                    <ul>
+                        <li>You're having a very low energy day</li>
+                        <li>You're struggling with a specific task</li>
+                        <li>You need help with cleaning or personal care</li>
+                        <li>You're feeling frustrated or overwhelmed</li>
+                        <li>You want to celebrate a win!</li>
+                        <li>Something in the routine isn't working</li>
+                    </ul>
+                </div>
+
+                <div class="card card-border-blue">
+                    <h3>🩺 Signs of Gout Flare</h3>
+                    <ul>
+                        <li><strong>Sudden intense joint pain</strong> (often in big toe)</li>
+                        <li><strong>Swelling</strong> in the joint</li>
+                        <li><strong>Redness</strong> and warmth in affected area</li>
+                        <li><strong>Limited range of motion</strong></li>
+                        <li><strong>Tenderness</strong> - even light touch hurts</li>
+                    </ul>
+                    <div class="alert-box" style="margin-top: 1rem;">
+                        <p style="color: #1976d2; font-weight: 600; margin: 0;">If you notice these signs, tell Mindy
+                            immediately! Gout flares need quick treatment.</p>
+                    </div>
+                </div>
+
+                <div class="card card-border-purple">
+                    <h3>🧠 Managing Tremors</h3>
+                    <p><strong>Remember:</strong> Your tremors are a nervous system response, not danger.</p>
+                    <p><strong>When tremors start:</strong></p>
+                    <ol>
+                        <li>Pause what you're doing</li>
+                        <li>Take slow, deep breaths (box breathing: 4-4-4-4)</li>
+                        <li>Sit down if standing</li>
+                        <li>Tell yourself: "This is just nervous energy. I am safe."</li>
+                        <li>Slow down or take a short break</li>
+                        <li>Continue when tremors calm down</li>
+                    </ol>
+                    <p><strong>Tell Mindy if:</strong> Tremors don't calm with breathing, or are worse than usual.</p>
+                </div>
+
+                <div class="alert-box"
+                    style="border-color: #4caf50; background: linear-gradient(135deg, #e8f5e9, #c8e6c9); text-align: center;">
+                    <h3 style="color: #2e7d32;">💚 Mindy is Here to Help</h3>
+                    <p>It's ALWAYS okay to ask for help. Mindy cares about you and wants to support your healing. You
+                        don't have to handle everything alone!</p>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Navigation
+        const navButtons = document.querySelectorAll('.nav-btn');
+        const pages = document.querySelectorAll('.page');
+
+        navButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const pageId = button.dataset.page;
+
+                // Update active button
+                navButtons.forEach(btn => btn.classList.remove('active'));
+                button.classList.add('active');
+
+                // Show corresponding page
+                pages.forEach(page => page.classList.remove('active'));
+                document.getElementById(pageId).classList.add('active');
+            });
+        });
+
+        // Get current day and schedule type
+        const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+        const today = days[new Date().getDay()];
+
+        document.getElementById('current-day').textContent = today;
+
+        let scheduleType = '';
+        let scheduleColor = '';
+        if (today === 'Monday' || today === 'Wednesday' || today === 'Friday') {
+            scheduleType = 'Gym Day 💪';
+            scheduleColor = '#4caf50';
+        } else if (today === 'Sunday') {
+            scheduleType = 'Church & Rest Day ⛪';
+            scheduleColor = '#9c27b0';
+        } else {
+            scheduleType = 'Home Exercise Day 🏠';
+            scheduleColor = '#2196f3';
+        }
+        document.getElementById('schedule-type').textContent = scheduleType;
+        document.getElementById('schedule-type').style.color = scheduleColor;
+
+        // Day selector for schedule page
+        const dayButtons = document.querySelectorAll('.day-button');
+        dayButtons.forEach(button => {
+            if (button.dataset.day === today) {
+                button.classList.add('today');
+                button.classList.add('active');
+                showSchedule(today);
+            }
+
+            button.addEventListener('click', () => {
+                dayButtons.forEach(btn => btn.classList.remove('active'));
+                button.classList.add('active');
+                showSchedule(button.dataset.day);
+            });
+        });
+
+        function showSchedule(day) {
+            const scheduleContent = document.getElementById('schedule-content');
+            let html = '';
+
+            if (day === 'Monday' || day === 'Wednesday' || day === 'Friday') {
+                html = `
+                    <div class="card" style="background: linear-gradient(135deg, #4caf50, #66bb6a); color: white; text-align: center;">
+                        <h3 style="color: white; margin: 0;">💪 Gym Day Schedule</h3>
+                        <p style="margin: 0.5rem 0 0 0; opacity: 0.95;">You go to the gym with Mindy</p>
+                    </div>
+
+                    <h3>Morning Block (8:30 AM - 12:30 PM)</h3>
+                    
+                    <div class="schedule-block">
+                        <div class="schedule-time">8:30 - 9:00 AM</div>
+                        <div class="schedule-title">🌅 Wake Up & Morning Personal Care</div>
+                        <div class="schedule-details">✓ Compression socks first ✓ Bathroom ✓ Wash face ✓ Brush teeth (2 min) ✓ Comb hair ✓ Get dressed ✓ Apply deodorant ✓ Drink 16 oz water</div>
+                    </div>
+
+                    <div class="schedule-block meal">
+                        <div class="schedule-time">9:00 - 9:45 AM</div>
+                        <div class="schedule-title">🍳 Breakfast (Mindy has this ready)</div>
+                        <div class="schedule-details">PCOS & gout-friendly, egg-free meal. Examples: Steel-cut oats with berries, smoothie bowl, avocado toast.</div>
+                    </div>
+
+                    <div class="schedule-block">
+                        <div class="schedule-time">9:45 - 10:00 AM</div>
+                        <div class="schedule-title">🚶 Post-Meal Movement & Kitchen Help</div>
+                        <div class="schedule-details">10-minute gentle walk OR calf raises, squats, light stretching. Help Mindy clean up.</div>
+                    </div>
+
+                    <div class="schedule-block rest">
+                        <div class="schedule-time">10:00 - 10:30 AM</div>
+                        <div class="schedule-title">🛏️ LYING DOWN REST #1</div>
+                        <div class="schedule-details">Complete rest, lying flat. Set timer for 30 minutes. NO screens - just rest.</div>
+                    </div>
+
+                    <div class="schedule-block">
+                        <div class="schedule-time">10:30 - 11:00 AM</div>
+                        <div class="schedule-title">💬 Speech Therapy Exercises (SITTING)</div>
+                        <div class="schedule-details">Follow your speech therapy app. Reading aloud, vocal exercises, breathing techniques.</div>
+                    </div>
+
+                    <div class="schedule-block">
+                        <div class="schedule-time">11:00 - 11:05 AM</div>
+                        <div class="schedule-title">🎒 Prepare for Gym</div>
+                        <div class="schedule-details">Gather gym bag (towel, water, phone with PT app). Use bathroom. Walk to car with Mindy.</div>
+                    </div>
+
+                    <div class="schedule-block">
+                        <div class="schedule-time">11:05 - 11:20 AM</div>
+                        <div class="schedule-title">🚗 Travel to Gym</div>
+                        <div class="schedule-details">15-minute drive. Sit, relax, listen to music.</div>
+                    </div>
+
+                    <div class="schedule-block">
+                        <div class="schedule-time">11:20 AM - 12:20 PM</div>
+                        <div class="schedule-title">💪 PHYSICAL THERAPY AT GYM</div>
+                        <div class="schedule-details">10 min warm-up (recumbent bike) → 15 min active → 5 min cool-down → Rest 5 min → 1 hour strength training. Remember: Movement is SAFE. You're retraining your nervous system!</div>
+                    </div>
+
+                    <div class="schedule-block">
+                        <div class="schedule-time">12:20 - 12:35 PM</div>
+                        <div class="schedule-title">🚗 Travel Home</div>
+                        <div class="schedule-details">15-minute drive. Acknowledge: You exercised and you're safe!</div>
+                    </div>
+
+                    <div class="schedule-block rest">
+                        <div class="schedule-time">12:35 - 1:05 PM</div>
+                        <div class="schedule-title">🛏️ LYING DOWN REST #2</div>
+                        <div class="schedule-details">CRITICAL post-exercise recovery. Lie flat, drink water. NO phone - body needs full recovery.</div>
+                    </div>
+
+                    <h3>Midday Block (1:05 PM - 5:00 PM)</h3>
+
+                    <div class="schedule-block meal">
+                        <div class="schedule-time">1:05 - 1:50 PM</div>
+                        <div class="schedule-title">🥗 Lunch</div>
+                        <div class="schedule-details">Substantial PCOS & gout-friendly meal. Examples: Chicken quinoa bowl, turkey wrap, lentil soup.</div>
+                    </div>
+
+                    <div class="schedule-block">
+                        <div class="schedule-time">1:50 - 2:05 PM</div>
+                        <div class="schedule-title">🚶 Post-Meal Movement & Kitchen Help</div>
+                        <div class="schedule-details">10-minute gentle walk. Help clean dishes (sit and dry).</div>
+                    </div>
+
+                    <div class="schedule-block rest">
+                        <div class="schedule-time">2:05 - 2:35 PM</div>
+                        <div class="schedule-title">🛏️ LYING DOWN REST #3</div>
+                        <div class="schedule-details">Post-meal rest. Lie flat, set timer.</div>
+                    </div>
+
+                    <div class="schedule-block">
+                        <div class="schedule-time">2:35 - 3:35 PM</div>
+                        <div class="schedule-title">🎨 OT & Creative Time (SITTING)</div>
+                        <div class="schedule-details">First 30 min: OT exercises. Second 30 min: Art OR reading aloud.</div>
+                    </div>
+
+                    <div class="schedule-block rest">
+                        <div class="schedule-time">3:35 - 4:05 PM</div>
+                        <div class="schedule-title">🛏️ LYING DOWN REST #4</div>
+                        <div class="schedule-details">Afternoon rest. Lie flat, set timer.</div>
+                    </div>
+
+                    <div class="schedule-block">
+                        <div class="schedule-time">4:05 - 5:00 PM</div>
+                        <div class="schedule-title">✨ Light Cleaning OR Creative Activity</div>
+                        <div class="schedule-details">Help with light cleaning OR continue art project OR gentle stretching.</div>
+                    </div>
+
+                    <h3>Evening Block (5:00 PM - 10:00 PM)</h3>
+
+                    <div class="schedule-block meal">
+                        <div class="schedule-time">5:00 - 5:45 PM</div>
+                        <div class="schedule-title">🍽️ Dinner</div>
+                        <div class="schedule-details">Help Mindy prep. Eat dinner. FINISH BY 6:00 PM!</div>
+                    </div>
+
+                    <div class="schedule-block">
+                        <div class="schedule-time">5:45 - 6:00 PM</div>
+                        <div class="schedule-title">🧹 Post-Meal Movement & Cleanup</div>
+                        <div class="schedule-details">10-minute walk. Help clean up.</div>
+                    </div>
+
+                    <div class="schedule-block rest">
+                        <div class="schedule-time">6:00 - 6:30 PM</div>
+                        <div class="schedule-title">🛏️ LYING DOWN REST #5</div>
+                        <div class="schedule-details">Post-meal/cleanup rest. Lie flat for digestion.</div>
+                    </div>
+
+                    <div class="schedule-block">
+                        <div class="schedule-time">6:30 - 7:00 PM</div>
+                        <div class="schedule-title">🚿 Evening Personal Hygiene</div>
+                        <div class="schedule-details">Shower OR wash face/freshen up. Full hygiene routine.</div>
+                    </div>
+
+                    <div class="schedule-block rest">
+                        <div class="schedule-time">7:00 - 7:30 PM</div>
+                        <div class="schedule-title">🛏️ LYING DOWN REST #6</div>
+                        <div class="schedule-details">Post-hygiene rest. Lie flat, set timer.</div>
+                    </div>
+
+                    <div class="schedule-block">
+                        <div class="schedule-time">7:30 - 8:30 PM</div>
+                        <div class="schedule-title">📚 Evening Activity (SITTING) 📵 NO SCREENS AFTER 8 PM</div>
+                        <div class="schedule-details">Art, reading aloud, audio book, conversation with Mindy. Dim lights at 8 PM.</div>
+                    </div>
+
+                    <div class="schedule-block rest">
+                        <div class="schedule-time">8:30 - 9:00 PM</div>
+                        <div class="schedule-title">🛏️ LYING DOWN REST #7</div>
+                        <div class="schedule-details">Pre-bedtime rest. Practice gratitude (3 things).</div>
+                    </div>
+
+                    <div class="schedule-block rest">
+                        <div class="schedule-time">9:00 - 9:30 PM</div>
+                        <div class="schedule-title">🛏️ LYING DOWN REST #8</div>
+                        <div class="schedule-details">Continue resting. Can read while lying down.</div>
+                    </div>
+
+                    <div class="schedule-block">
+                        <div class="schedule-time">9:30 - 10:00 PM</div>
+                        <div class="schedule-title">🌙 Evening Wind-Down</div>
+                        <div class="schedule-details">Bathroom, brush teeth (2 min), floss, wash face, wash feet, breathing exercises, prepare bedroom for sleep.</div>
+                    </div>
+
+                    <div class="alert-box" style="border-color: #4caf50; background: #e8f5e9;">
+                        <h4 style="color: #2e7d32; margin: 0 0 0.5rem 0;">💚 Gym Day Totals</h4>
+                        <p style="margin: 0;"><strong>Lying Down Rest:</strong> 4 hours (8 periods) - Need 2 more 30-min periods</p>
+                        <p style="margin: 0;"><strong>Exercise:</strong> 1.5 hours gym PT + 30 min post-meal = 2 hours ✓</p>
+                        <p style="margin: 0;"><strong>Last eating time:</strong> 6:00 PM</p>
+                    </div>
+                `;
+            } else if (day === 'Sunday') {
+                html = `
+                    <div class="card" style="background: linear-gradient(135deg, #9c27b0, #ab47bc); color: white; text-align: center;">
+                        <h3 style="color: white; margin: 0;">⛪ Sunday Schedule (Church & Rest Day)</h3>
+                        <p style="margin: 0.5rem 0 0 0; opacity: 0.95;">Your lightest day - church, family time, and extra rest</p>
+                    </div>
+
+                    <h3>Morning (8:30 AM - 11:30 AM)</h3>
+
+                    <div class="schedule-block">
+                        <div class="schedule-time">8:30 - 9:00 AM</div>
+                        <div class="schedule-title">🌅 Wake Up & Morning Personal Care</div>
+                        <div class="schedule-details">Take extra time to prepare for church. Dress in church clothes. Extra attention to hair.</div>
+                    </div>
+
+                    <div class="schedule-block meal">
+                        <div class="schedule-time">9:00 - 9:45 AM</div>
+                        <div class="schedule-title">🍳 Breakfast</div>
+                        <div class="schedule-details">Same as other days - Mindy has this ready.</div>
+                    </div>
+
+                    <div class="schedule-block">
+                        <div class="schedule-time">9:45 - 10:00 AM</div>
+                        <div class="schedule-title">🚶 Post-Meal Movement</div>
+                        <div class="schedule-details">10-minute gentle walk. Help clean up.</div>
+                    </div>
+
+                    <div class="schedule-block rest">
+                        <div class="schedule-time">10:00 - 10:30 AM</div>
+                        <div class="schedule-title">🛏️ LYING DOWN REST #1</div>
+                        <div class="schedule-details">Post-meal rest.</div>
+                    </div>
+
+                    <div class="schedule-block">
+                        <div class="schedule-time">10:30 - 10:50 AM</div>
+                        <div class="schedule-title">🧘 Exercise: Gentle Movement</div>
+                        <div class="schedule-details">20 minutes: Very light activity. Gentle stretching, slow walk, light yoga. Very low intensity (rest day!).</div>
+                    </div>
+
+                    <div class="schedule-block rest">
+                        <div class="schedule-time">10:50 - 11:20 AM</div>
+                        <div class="schedule-title">🛏️ LYING DOWN REST #2</div>
+                        <div class="schedule-details">Post-exercise rest.</div>
+                    </div>
+
+                    <div class="schedule-block">
+                        <div class="schedule-time">11:20 - 11:30 AM</div>
+                        <div class="schedule-title">🎒 Final Church Preparation</div>
+                        <div class="schedule-details">Gather items: scriptures, water bottle, small snack. Use bathroom. Walk to car with Mindy.</div>
+                    </div>
+
+                    <h3>Church (11:30 AM - 1:30 PM)</h3>
+
+                    <div class="schedule-block">
+                        <div class="schedule-time">11:30 AM - 1:30 PM</div>
+                        <div class="schedule-title">⛪ Church Services & Fellowship</div>
+                        <div class="schedule-details">2 hours of sitting/standing/social interaction. Low-intensity but can be exhausting. Bring water bottle. You'll rest after!</div>
+                    </div>
+
+                    <h3>Afternoon & Evening (1:30 PM - 10:00 PM)</h3>
+
+                    <div class="schedule-block rest">
+                        <div class="schedule-time">1:30 - 2:00 PM</div>
+                        <div class="schedule-title">🛏️ LYING DOWN REST #3</div>
+                        <div class="schedule-details">CRITICAL post-church recovery. Social interaction is very draining.</div>
+                    </div>
+
+                    <div class="schedule-block meal">
+                        <div class="schedule-time">2:00 - 2:45 PM</div>
+                        <div class="schedule-title">🥗 Lunch</div>
+                        <div class="schedule-details">Substantial meal. Eat with Mindy.</div>
+                    </div>
+
+                    <div class="schedule-block">
+                        <div class="schedule-time">2:45 - 3:00 PM</div>
+                        <div class="schedule-title">🚶 Post-Meal Movement</div>
+                        <div class="schedule-details">10-minute gentle walk. Help clean up.</div>
+                    </div>
+
+                    <div class="schedule-block rest">
+                        <div class="schedule-time">3:00 - 3:30 PM</div>
+                        <div class="schedule-title">🛏️ LYING DOWN REST #4</div>
+                        <div class="schedule-details">Post-meal rest.</div>
+                    </div>
+
+                    <div class="schedule-block">
+                        <div class="schedule-time">3:30 - 4:30 PM</div>
+                        <div class="schedule-title">📖 Restful Activity (SITTING)</div>
+                        <div class="schedule-details">Scripture study, journaling, light reading OR help Mindy with meal prep OR art time. Keep it calm!</div>
+                    </div>
+
+                    <div class="schedule-block rest">
+                        <div class="schedule-time">4:30 - 5:00 PM</div>
+                        <div class="schedule-title">🛏️ LYING DOWN REST #5</div>
+                        <div class="schedule-details">Afternoon rest.</div>
+                    </div>
+
+                    <div class="schedule-block meal">
+                        <div class="schedule-time">5:00 - 6:00 PM</div>
+                        <div class="schedule-title">🍽️ Dinner</div>
+                        <div class="schedule-details">Help Mindy, eat dinner (FINISH BY 6 PM!), post-meal walk (10 min), help cleanup.</div>
+                    </div>
+
+                    <div class="schedule-block rest">
+                        <div class="schedule-time">6:00 - 6:30 PM</div>
+                        <div class="schedule-title">🛏️ LYING DOWN REST #6</div>
+                        <div class="schedule-details">Post-meal/cleanup rest.</div>
+                    </div>
+
+                    <div class="schedule-block">
+                        <div class="schedule-time">6:30 - 7:30 PM</div>
+                        <div class="schedule-title">🎲 Family Game Time!</div>
+                        <div class="schedule-details">30-45 minutes: Card games or board games with Mindy's family. Sit at table, enjoy family time. This is FUN but uses social energy!</div>
+                    </div>
+
+                    <div class="schedule-block rest">
+                        <div class="schedule-time">7:30 - 8:00 PM</div>
+                        <div class="schedule-title">🛏️ LYING DOWN REST #7</div>
+                        <div class="schedule-details">Post-game recovery. Social activity is tiring even when fun!</div>
+                    </div>
+
+                    <div class="schedule-block">
+                        <div class="schedule-time">8:00 - 8:30 PM</div>
+                        <div class="schedule-title">📚 Evening Reflection (SITTING) 📵 NO SCREENS AFTER 8 PM</div>
+                        <div class="schedule-details">Scripture study, gratitude journaling, review the week, set intentions for Monday. Calm, reflective activities.</div>
+                    </div>
+
+                    <div class="schedule-block rest">
+                        <div class="schedule-time">8:30 - 9:00 PM</div>
+                        <div class="schedule-title">🛏️ LYING DOWN REST #8</div>
+                        <div class="schedule-details">Pre-bedtime rest. Gratitude (3 things). Calm mind for sleep.</div>
+                    </div>
+
+                    <div class="schedule-block rest">
+                        <div class="schedule-time">9:00 - 9:30 PM</div>
+                        <div class="schedule-title">🛏️ LYING DOWN REST #9</div>
+                        <div class="schedule-details">Continue resting. Can read while lying down.</div>
+                    </div>
+
+                    <div class="schedule-block">
+                        <div class="schedule-time">9:30 - 10:00 PM</div>
+                        <div class="schedule-title">🌙 Evening Wind-Down</div>
+                        <div class="schedule-details">Bathroom, teeth, face, feet, breathing, remove compression socks, bedroom prep.</div>
+                    </div>
+
+                    <div class="alert-box" style="border-color: #9c27b0; background: #f3e5f5;">
+                        <h4 style="color: #7b1fa2; margin: 0 0 0.5rem 0;">💜 Sunday Totals</h4>
+                        <p style="margin: 0;"><strong>Lying Down Rest:</strong> 4.5 hours (9 periods) - Need 1.5 more hours</p>
+                        <p style="margin: 0;"><strong>Exercise:</strong> 20 min gentle + 30 min post-meal = 50 minutes (lightest day)</p>
+                        <p style="margin: 0;"><strong>Special:</strong> Church (2 hrs sitting) + Family Game Time!</p>
+                    </div>
+                `;
+            } else {
+                html = `
+                    <div class="card" style="background: linear-gradient(135deg, #2196f3, #42a5f5); color: white; text-align: center;">
+                        <h3 style="color: white; margin: 0;">🏠 Home Exercise Day Schedule</h3>
+                        <p style="margin: 0.5rem 0 0 0; opacity: 0.95;">Light PT maintenance at home</p>
+                    </div>
+
+                    <div class="alert-box">
+                        <p style="margin: 0;"><strong>Note:</strong> Home exercise days have <strong>6 bursts of 20-minute exercises</strong> spread throughout the day, plus post-meal movement. This keeps you active without overwhelming your body!</p>
+                    </div>
+
+                    <p style="font-size: 1.2rem; color: #424242; margin: 2rem 0;">The schedule follows a similar structure to Gym Days, but instead of going to the gym, you have 6 exercise bursts of 20 minutes each throughout the day:</p>
+
+                    <ul style="font-size: 1.1rem; line-height: 1.8; color: #424242;">
+                        <li><strong>Exercise Burst #1 (10:30-10:50 AM):</strong> Bodyweight strength circuit</li>
+                        <li><strong>Exercise Burst #2 (11:35-11:50 AM):</strong> Cardio intervals</li>
+                        <li><strong>Exercise Burst #3 (2:00-2:20 PM):</strong> Gentle walk or yoga</li>
+                        <li><strong>Exercise Burst #4 (6:55-7:10 PM):</strong> Resistance bands</li>
+                        <li><strong>Exercise Burst #5 (7:40-7:55 PM):</strong> Stretching/restorative yoga</li>
+                        <li><strong>Exercise Burst #6 (8:25-8:40 PM):</strong> Gentle movement/tai chi</li>
+                    </ul>
+
+                    <div class="alert-box" style="border-color: #2196f3; background: #e3f2fd;">
+                        <h4 style="color: #1976d2; margin: 0 0 0.5rem 0;">💙 Home Day Totals</h4>
+                        <p style="margin: 0;"><strong>Lying Down Rest:</strong> 5 hours (10 periods) - Need 1 more hour</p>
+                        <p style="margin: 0;"><strong>Exercise:</strong> 6 bursts x 20 min = 2 hours ✓</p>
+                        <p style="margin: 0;"><strong>Last eating time:</strong> 6:00 PM</p>
+                    </div>
+                `;
+            }
+
+            scheduleContent.innerHTML = html;
+        }
+
+        // Initialize tracker checkboxes
+        const trackerData = {
+            'morning-checks': [
+                'Compression socks put on FIRST',
+                'Used bathroom properly',
+                'Washed face',
+                'Brushed teeth (2 minutes)',
+                'Combed hair, pulled back from face',
+                'Got dressed in clean clothes',
+                'Applied deodorant',
+                'Drank 16 oz water'
+            ],
+            'meals-checks': [
+                'Ate breakfast',
+                'Post-breakfast movement (10 min)',
+                'Ate snack',
+                'Ate lunch',
+                'Post-lunch movement (10 min)',
+                'Ate dinner (BEFORE 6 PM)',
+                'Post-dinner movement (10 min)',
+                'Drank 80-100 oz water today'
+            ],
+            'exercise-checks': [
+                'Completed PT/gym session OR exercise bursts',
+                'Speech therapy exercises',
+                'OT exercises',
+                'All movement felt safe'
+            ],
+            'rest-checks': [
+                'REST #1',
+                'REST #2',
+                'REST #3',
+                'REST #4',
+                'REST #5',
+                'REST #6',
+                'REST #7',
+                'REST #8',
+                'REST #9 (if applicable)',
+                'REST #10 (if applicable)',
+                'Did NOT lie down outside scheduled times'
+            ],
+            'evening-checks': [
+                'Showered OR washed face/freshened up',
+                'Brushed teeth (2 minutes)',
+                'Flossed',
+                'Used mouthwash',
+                'Washed face',
+                'Washed feet',
+                'Moisturized',
+                'Removed compression socks',
+                'Evening breathing exercises'
+            ]
+        };
+
+        Object.keys(trackerData).forEach(category => {
+            const container = document.getElementById(category);
+            trackerData[category].forEach((item, index) => {
+                const div = document.createElement('div');
+                div.className = 'checkbox-item';
+                const id = `${category}-${index}`;
+
+                div.innerHTML = `
+                    <input type="checkbox" id="${id}" />
+                    <label for="${id}">${item}</label>
+                `;
+
+                const checkbox = div.querySelector('input');
+                checkbox.addEventListener('change', (e) => {
+                    if (e.target.checked) {
+                        div.classList.add('checked');
+                    } else {
+                        div.classList.remove('checked');
+                    }
+                });
+
+                container.appendChild(div);
+            });
+        });
+
+        // Calorie Tracker
+        const calorieInputs = ['breakfast-calories', 'snack-calories', 'lunch-calories', 'dinner-calories'];
+
+        function updateCalorieTotal() {
+            let total = 0;
+            calorieInputs.forEach(id => {
+                const value = parseInt(document.getElementById(id).value) || 0;
+                total += value;
+            });
+
+            document.getElementById('total-calories').textContent = total;
+
+            const statusDiv = document.getElementById('calorie-status');
+            if (total === 0) {
+                statusDiv.textContent = 'Enter your meals above';
+                statusDiv.style.background = 'rgba(255,255,255,0.2)';
+            } else if (total < 1800) {
+                statusDiv.textContent = '⚠️ Too few calories - eat more!';
+                statusDiv.style.background = 'rgba(244, 67, 54, 0.3)';
+            } else if (total >= 1800 && total <= 2200) {
+                statusDiv.textContent = '✓ Perfect! You\'re in the healthy range!';
+                statusDiv.style.background = 'rgba(76, 175, 80, 0.4)';
+            } else if (total > 2200 && total <= 2400) {
+                statusDiv.textContent = '⚠️ Slightly over goal';
+                statusDiv.style.background = 'rgba(255, 152, 0, 0.3)';
+            } else {
+                statusDiv.textContent = '⚠️ Too many calories';
+                statusDiv.style.background = 'rgba(244, 67, 54, 0.3)';
+            }
+        }
+
+        // Add event listeners to all calorie inputs
+        calorieInputs.forEach(id => {
+            document.getElementById(id).addEventListener('input', updateCalorieTotal);
+        });
+    </script>
+</body>
+
+</html>
