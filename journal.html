@@ -84,7 +84,13 @@
             </div>
 
             <div class="card card-border-green">
-                <h3>📚 Recent Journal Entries</h3>
+                <h3>📚 Recent Entries</h3>
+                <div style="margin-bottom: 1rem;">
+                    <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                        <input type="checkbox" id="show-weekly-notes" checked style="width: 20px; height: 20px; cursor: pointer; accent-color: #4caf50;">
+                        <span style="font-size: 1.1rem;">Show weekly notes in journal</span>
+                    </label>
+                </div>
                 <div id="recent-journals"></div>
             </div>
         </main>
@@ -96,6 +102,90 @@
         document.getElementById('journal-date').value = getTodayString();
         setJournalToday();
         loadRecentJournals();
+
+        // Add event listener for checkbox
+        document.getElementById('show-weekly-notes').addEventListener('change', loadRecentJournals);
+
+        // Override the loadRecentJournals function to include weekly notes
+        async function loadRecentJournals() {
+            const showWeeklyNotes = document.getElementById('show-weekly-notes').checked;
+            const journalKeys = await listKeys('journal_');
+            const journals = [];
+
+            for (const key of journalKeys) {
+                const data = await loadData(key);
+                if (data && data.text) {
+                    journals.push({ ...data, type: 'journal' });
+                }
+            }
+
+            // Also load weekly notes if checkbox is checked
+            if (showWeeklyNotes) {
+                const weeklyKeys = await listKeys('weekly_notes_');
+                for (const key of weeklyKeys) {
+                    const data = await loadData(key);
+                    if (data) {
+                        journals.push({ ...data, type: 'weekly', date: data.weekStart });
+                    }
+                }
+            }
+
+            journals.sort((a, b) => new Date(b.date) - new Date(a.date));
+            const recent = journals.slice(0, 20);
+
+            const container = document.getElementById('recent-journals');
+            if (!container) return;
+
+            if (recent.length === 0) {
+                container.innerHTML = '<p style="color: #666;">No entries yet. Start writing!</p>';
+                return;
+            }
+
+            container.innerHTML = recent.map(entry => {
+                if (entry.type === 'journal') {
+                    return `
+                        <div class="saved-journal">
+                            <h4>
+                                📖 ${new Date(entry.date + 'T12:00:00').toLocaleDateString('en-US', { 
+                                    weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' 
+                                })}
+                                <button class="delete-btn" onclick="deleteJournal('${entry.date}')">Delete</button>
+                            </h4>
+                            <p>${entry.text}</p>
+                        </div>
+                    `;
+                } else {
+                    // Weekly notes entry
+                    const weekDate = new Date(entry.date + 'T12:00:00').toLocaleDateString('en-US', { 
+                        month: 'long', day: 'numeric', year: 'numeric' 
+                    });
+                    return `
+                        <div class="saved-journal" style="background: linear-gradient(135deg, #fff9e6, #fff3e0); border-color: #ffa726;">
+                            <h4 style="color: #f57c00;">
+                                📝 Weekly Notes - Week of ${weekDate}
+                            </h4>
+                            ${entry.energyBest ? `<p><strong>Best energy time:</strong> ${entry.energyBest}</p>` : ''}
+                            ${entry.energyWorst ? `<p><strong>Worst energy time:</strong> ${entry.energyWorst}</p>` : ''}
+                            ${entry.energyHelp ? `<p><strong>Activities that help:</strong> ${entry.energyHelp}</p>` : ''}
+                            ${entry.energyDrain ? `<p><strong>Activities that drain:</strong> ${entry.energyDrain}</p>` : ''}
+                            ${entry.painLevel ? `<p><strong>Joint pain level:</strong> ${entry.painLevel}/10</p>` : ''}
+                            ${entry.tremorLevel ? `<p><strong>Tremor severity:</strong> ${entry.tremorLevel}/10</p>` : ''}
+                            ${entry.tremorTrigger ? `<p><strong>Tremor triggers:</strong> ${entry.tremorTrigger}</p>` : ''}
+                            ${entry.tremorCalm ? `<p><strong>What helped tremors:</strong> ${entry.tremorCalm}</p>` : ''}
+                            ${entry.waterIntake ? `<p><strong>Average water intake:</strong> ${entry.waterIntake} oz/day</p>` : ''}
+                            ${entry.speechWins ? `<p><strong>Speech therapy wins:</strong> ${entry.speechWins}</p>` : ''}
+                            ${entry.otCompleted ? `<p><strong>OT exercises:</strong> ${entry.otCompleted}</p>` : ''}
+                            ${entry.ptImprovements ? `<p><strong>PT improvements:</strong> ${entry.ptImprovements}</p>` : ''}
+                            ${entry.skillsMastering ? `<p><strong>Skills mastering:</strong> ${entry.skillsMastering}</p>` : ''}
+                            ${entry.goal1 || entry.goal2 || entry.goal3 ? `<p><strong>Goals for next week:</strong><br>` +
+                                (entry.goal1 ? `1. ${entry.goal1}<br>` : '') +
+                                (entry.goal2 ? `2. ${entry.goal2}<br>` : '') +
+                                (entry.goal3 ? `3. ${entry.goal3}` : '') + `</p>` : ''}
+                        </div>
+                    `;
+                }
+            }).join('');
+        }
     </script>
 </body>
 </html>

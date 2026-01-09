@@ -65,44 +65,228 @@
             <h2>📝 Weekly Notes & Reflection</h2>
 
             <div class="alert-box">
-                <p>Use this space to track your progress each week. Write down what's working, what's challenging,
-                    and what you're proud of. Print this page or write in a journal!</p>
+                <p>Track your progress each week. Your notes are automatically saved! These also appear in your journal so you have a complete record.</p>
+            </div>
+
+            <div class="card card-border-blue">
+                <h3>📅 Select Week</h3>
+                <div class="date-picker">
+                    <input type="date" id="weekly-notes-date" />
+                    <button onclick="loadWeeklyNotes()">Load This Week</button>
+                    <button onclick="setThisWeek()">This Week</button>
+                </div>
+                <p style="margin-top: 1rem; color: #666;">Viewing notes for week of: <strong id="current-week-date"></strong></p>
             </div>
 
             <div class="card card-border-green">
                 <h3>Energy Patterns</h3>
-                <p><strong>Best time of day:</strong> _______________________</p>
-                <p><strong>Worst time of day:</strong> _______________________</p>
-                <p><strong>Activities that help:</strong> _______________________</p>
-                <p><strong>Activities that drain:</strong> _______________________</p>
+                <p style="margin-bottom: 0.5rem;"><strong>Best time of day:</strong></p>
+                <input type="text" id="energy-best" placeholder="e.g., Mid-morning after breakfast" style="width: 100%; padding: 0.75rem; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 1.1rem; font-family: 'Atkinson Hyperlegible', sans-serif; margin-bottom: 1rem;">
+                
+                <p style="margin-bottom: 0.5rem;"><strong>Worst time of day:</strong></p>
+                <input type="text" id="energy-worst" placeholder="e.g., Late afternoon around 3-4 PM" style="width: 100%; padding: 0.75rem; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 1.1rem; font-family: 'Atkinson Hyperlegible', sans-serif; margin-bottom: 1rem;">
+                
+                <p style="margin-bottom: 0.5rem;"><strong>Activities that help:</strong></p>
+                <input type="text" id="energy-help" placeholder="e.g., Short walks, gentle stretching" style="width: 100%; padding: 0.75rem; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 1.1rem; font-family: 'Atkinson Hyperlegible', sans-serif; margin-bottom: 1rem;">
+                
+                <p style="margin-bottom: 0.5rem;"><strong>Activities that drain:</strong></p>
+                <input type="text" id="energy-drain" placeholder="e.g., Too much screen time, skipping rest periods" style="width: 100%; padding: 0.75rem; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 1.1rem; font-family: 'Atkinson Hyperlegible', sans-serif;">
             </div>
 
             <div class="card card-border-orange">
                 <h3>Gout & Tremor Tracking</h3>
-                <p><strong>Joint pain level (1-10):</strong> _______________________</p>
-                <p><strong>Tremor severity (1-10):</strong> _______________________</p>
-                <p><strong>What triggered tremors:</strong> _______________________</p>
-                <p><strong>What helped calm tremors:</strong> _______________________</p>
-                <p><strong>Water intake today:</strong> _______ oz</p>
+                <p style="margin-bottom: 0.5rem;"><strong>Joint pain level (1-10):</strong></p>
+                <input type="number" id="pain-level" min="1" max="10" placeholder="1-10" style="width: 150px; padding: 0.75rem; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 1.1rem; font-family: 'Atkinson Hyperlegible', sans-serif; margin-bottom: 1rem;">
+                
+                <p style="margin-bottom: 0.5rem;"><strong>Tremor severity (1-10):</strong></p>
+                <input type="number" id="tremor-level" min="1" max="10" placeholder="1-10" style="width: 150px; padding: 0.75rem; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 1.1rem; font-family: 'Atkinson Hyperlegible', sans-serif; margin-bottom: 1rem;">
+                
+                <p style="margin-bottom: 0.5rem;"><strong>What triggered tremors:</strong></p>
+                <input type="text" id="tremor-trigger" placeholder="e.g., Anxiety about exercise, feeling rushed" style="width: 100%; padding: 0.75rem; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 1.1rem; font-family: 'Atkinson Hyperlegible', sans-serif; margin-bottom: 1rem;">
+                
+                <p style="margin-bottom: 0.5rem;"><strong>What helped calm tremors:</strong></p>
+                <input type="text" id="tremor-calm" placeholder="e.g., Deep breathing, sitting down, reassurance" style="width: 100%; padding: 0.75rem; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 1.1rem; font-family: 'Atkinson Hyperlegible', sans-serif; margin-bottom: 1rem;">
+                
+                <p style="margin-bottom: 0.5rem;"><strong>Average water intake this week:</strong></p>
+                <input type="number" id="water-intake" placeholder="oz per day" style="width: 150px; padding: 0.75rem; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 1.1rem; font-family: 'Atkinson Hyperlegible', sans-serif;">
             </div>
 
             <div class="card card-border-blue">
                 <h3>Therapy Progress</h3>
-                <p><strong>Speech therapy wins:</strong> _______________________</p>
-                <p><strong>OT exercises completed:</strong> _______________________</p>
-                <p><strong>PT improvements:</strong> _______________________</p>
-                <p><strong>Skills I'm mastering:</strong> _______________________</p>
+                <p style="margin-bottom: 0.5rem;"><strong>Speech therapy wins:</strong></p>
+                <input type="text" id="speech-wins" placeholder="e.g., Spoke more clearly, completed all exercises" style="width: 100%; padding: 0.75rem; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 1.1rem; font-family: 'Atkinson Hyperlegible', sans-serif; margin-bottom: 1rem;">
+                
+                <p style="margin-bottom: 0.5rem;"><strong>OT exercises completed:</strong></p>
+                <input type="text" id="ot-completed" placeholder="e.g., Fine motor skills, daily living tasks" style="width: 100%; padding: 0.75rem; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 1.1rem; font-family: 'Atkinson Hyperlegible', sans-serif; margin-bottom: 1rem;">
+                
+                <p style="margin-bottom: 0.5rem;"><strong>PT improvements:</strong></p>
+                <input type="text" id="pt-improvements" placeholder="e.g., Stronger legs, better balance" style="width: 100%; padding: 0.75rem; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 1.1rem; font-family: 'Atkinson Hyperlegible', sans-serif; margin-bottom: 1rem;">
+                
+                <p style="margin-bottom: 0.5rem;"><strong>Skills I'm mastering:</strong></p>
+                <input type="text" id="skills-mastering" placeholder="e.g., Walking without tremors, speaking confidently" style="width: 100%; padding: 0.75rem; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 1.1rem; font-family: 'Atkinson Hyperlegible', sans-serif;">
             </div>
 
             <div class="card card-border-purple">
                 <h3>Goals for Next Week</h3>
-                <p><strong>1.</strong> _______________________</p>
-                <p><strong>2.</strong> _______________________</p>
-                <p><strong>3.</strong> _______________________</p>
+                <p style="margin-bottom: 0.5rem;"><strong>Goal 1:</strong></p>
+                <input type="text" id="goal-1" placeholder="e.g., Drink 90+ oz water every day" style="width: 100%; padding: 0.75rem; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 1.1rem; font-family: 'Atkinson Hyperlegible', sans-serif; margin-bottom: 1rem;">
+                
+                <p style="margin-bottom: 0.5rem;"><strong>Goal 2:</strong></p>
+                <input type="text" id="goal-2" placeholder="e.g., Complete all rest periods" style="width: 100%; padding: 0.75rem; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 1.1rem; font-family: 'Atkinson Hyperlegible', sans-serif; margin-bottom: 1rem;">
+                
+                <p style="margin-bottom: 0.5rem;"><strong>Goal 3:</strong></p>
+                <input type="text" id="goal-3" placeholder="e.g., Practice positive self-talk" style="width: 100%; padding: 0.75rem; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 1.1rem; font-family: 'Atkinson Hyperlegible', sans-serif;">
+            </div>
+
+            <div style="text-align: center; margin: 2rem 0;">
+                <button onclick="saveWeeklyNotes()" style="padding: 1rem 3rem; border: none; border-radius: 12px; background: linear-gradient(135deg, #66bb6a, #81c784); color: white; font-size: 1.3rem; font-weight: 700; cursor: pointer; font-family: 'Atkinson Hyperlegible', sans-serif; box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3);">
+                    💾 Save Weekly Notes
+                </button>
+            </div>
+
+            <div class="card card-border-green">
+                <h3>📚 Past Weekly Notes</h3>
+                <div id="past-weekly-notes"></div>
             </div>
         </main>
     </div>
 
     <script src="app.js"></script>
+    <script>
+        let currentWeekDate = getTodayString();
+
+        function setThisWeek() {
+            currentWeekDate = getTodayString();
+            document.getElementById('weekly-notes-date').value = currentWeekDate;
+            loadWeeklyNotes();
+        }
+
+        function getWeekStartDate(dateString) {
+            const date = new Date(dateString + 'T12:00:00');
+            const day = date.getDay();
+            const diff = date.getDate() - day; // Get Sunday of that week
+            const sunday = new Date(date.setDate(diff));
+            return formatDate(sunday);
+        }
+
+        async function loadWeeklyNotes() {
+            const dateInput = document.getElementById('weekly-notes-date');
+            if (dateInput && dateInput.value) {
+                currentWeekDate = dateInput.value;
+            }
+
+            const weekStart = getWeekStartDate(currentWeekDate);
+            const weekStartFormatted = new Date(weekStart + 'T12:00:00').toLocaleDateString('en-US', { 
+                month: 'long', day: 'numeric', year: 'numeric' 
+            });
+            
+            document.getElementById('current-week-date').textContent = weekStartFormatted;
+
+            const storageKey = `weekly_notes_${weekStart}`;
+            const savedNotes = await loadData(storageKey);
+
+            if (savedNotes) {
+                document.getElementById('energy-best').value = savedNotes.energyBest || '';
+                document.getElementById('energy-worst').value = savedNotes.energyWorst || '';
+                document.getElementById('energy-help').value = savedNotes.energyHelp || '';
+                document.getElementById('energy-drain').value = savedNotes.energyDrain || '';
+                document.getElementById('pain-level').value = savedNotes.painLevel || '';
+                document.getElementById('tremor-level').value = savedNotes.tremorLevel || '';
+                document.getElementById('tremor-trigger').value = savedNotes.tremorTrigger || '';
+                document.getElementById('tremor-calm').value = savedNotes.tremorCalm || '';
+                document.getElementById('water-intake').value = savedNotes.waterIntake || '';
+                document.getElementById('speech-wins').value = savedNotes.speechWins || '';
+                document.getElementById('ot-completed').value = savedNotes.otCompleted || '';
+                document.getElementById('pt-improvements').value = savedNotes.ptImprovements || '';
+                document.getElementById('skills-mastering').value = savedNotes.skillsMastering || '';
+                document.getElementById('goal-1').value = savedNotes.goal1 || '';
+                document.getElementById('goal-2').value = savedNotes.goal2 || '';
+                document.getElementById('goal-3').value = savedNotes.goal3 || '';
+            } else {
+                // Clear all fields if no saved data
+                ['energy-best', 'energy-worst', 'energy-help', 'energy-drain', 'pain-level', 
+                 'tremor-level', 'tremor-trigger', 'tremor-calm', 'water-intake', 'speech-wins',
+                 'ot-completed', 'pt-improvements', 'skills-mastering', 'goal-1', 'goal-2', 'goal-3'].forEach(id => {
+                    document.getElementById(id).value = '';
+                });
+            }
+
+            loadPastWeeklyNotes();
+        }
+
+        async function saveWeeklyNotes() {
+            const weekStart = getWeekStartDate(currentWeekDate);
+            const storageKey = `weekly_notes_${weekStart}`;
+
+            const notesData = {
+                weekStart: weekStart,
+                energyBest: document.getElementById('energy-best').value,
+                energyWorst: document.getElementById('energy-worst').value,
+                energyHelp: document.getElementById('energy-help').value,
+                energyDrain: document.getElementById('energy-drain').value,
+                painLevel: document.getElementById('pain-level').value,
+                tremorLevel: document.getElementById('tremor-level').value,
+                tremorTrigger: document.getElementById('tremor-trigger').value,
+                tremorCalm: document.getElementById('tremor-calm').value,
+                waterIntake: document.getElementById('water-intake').value,
+                speechWins: document.getElementById('speech-wins').value,
+                otCompleted: document.getElementById('ot-completed').value,
+                ptImprovements: document.getElementById('pt-improvements').value,
+                skillsMastering: document.getElementById('skills-mastering').value,
+                goal1: document.getElementById('goal-1').value,
+                goal2: document.getElementById('goal-2').value,
+                goal3: document.getElementById('goal-3').value,
+                timestamp: new Date().toISOString()
+            };
+
+            await saveData(storageKey, notesData);
+            alert('✅ Weekly notes saved!');
+            loadPastWeeklyNotes();
+        }
+
+        async function loadPastWeeklyNotes() {
+            const keys = await listKeys('weekly_notes_');
+            const weeklyNotes = [];
+
+            for (const key of keys) {
+                const data = await loadData(key);
+                if (data) {
+                    weeklyNotes.push(data);
+                }
+            }
+
+            weeklyNotes.sort((a, b) => new Date(b.weekStart) - new Date(a.weekStart));
+            const recent = weeklyNotes.slice(0, 8); // Show last 8 weeks
+
+            const container = document.getElementById('past-weekly-notes');
+            if (!container) return;
+
+            if (recent.length === 0) {
+                container.innerHTML = '<p style="color: #666;">No weekly notes saved yet. Start tracking this week!</p>';
+                return;
+            }
+
+            container.innerHTML = recent.map(entry => {
+                const weekDate = new Date(entry.weekStart + 'T12:00:00').toLocaleDateString('en-US', { 
+                    month: 'long', day: 'numeric', year: 'numeric' 
+                });
+                return `
+                    <div class="saved-journal">
+                        <h4>Week of ${weekDate}</h4>
+                        ${entry.energyBest ? `<p><strong>Best time:</strong> ${entry.energyBest}</p>` : ''}
+                        ${entry.painLevel ? `<p><strong>Pain level:</strong> ${entry.painLevel}/10</p>` : ''}
+                        ${entry.tremorLevel ? `<p><strong>Tremor severity:</strong> ${entry.tremorLevel}/10</p>` : ''}
+                        ${entry.speechWins ? `<p><strong>Speech wins:</strong> ${entry.speechWins}</p>` : ''}
+                        ${entry.ptImprovements ? `<p><strong>PT improvements:</strong> ${entry.ptImprovements}</p>` : ''}
+                        ${entry.goal1 ? `<p><strong>Goals:</strong> ${entry.goal1}${entry.goal2 ? ', ' + entry.goal2 : ''}${entry.goal3 ? ', ' + entry.goal3 : ''}</p>` : ''}
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Initialize
+        document.getElementById('weekly-notes-date').value = getTodayString();
+        setThisWeek();
+    </script>
 </body>
 </html>
