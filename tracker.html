@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daily Tracker - Abigail's Health Hub</title>
+    <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>🌿 Abigail's Health Hub</h1>
+        <p>Your Daily Guide to Feeling Better</p>
+    </header>
+
+    <div class="container">
+        <nav>
+            <a href="index.html">
+                <span class="icon">🏠</span>
+                <span>Home</span>
+            </a>
+            <a href="schedule.html">
+                <span class="icon">📅</span>
+                <span>My Schedule</span>
+            </a>
+            <a href="personalcare.html">
+                <span class="icon">💚</span>
+                <span>Personal Care</span>
+            </a>
+            <a href="meals.html">
+                <span class="icon">🍽️</span>
+                <span>Meal Plans</span>
+            </a>
+            <a href="healthinfo.html">
+                <span class="icon">📚</span>
+                <span>My Health Info</span>
+            </a>
+            <a href="tracker.html" class="active">
+                <span class="icon">✅</span>
+                <span>Daily Tracker</span>
+            </a>
+            <a href="journal.html">
+                <span class="icon">📖</span>
+                <span>My Journal</span>
+            </a>
+            <a href="progress.html">
+                <span class="icon">📊</span>
+                <span>Progress History</span>
+            </a>
+            <a href="notes.html">
+                <span class="icon">📝</span>
+                <span>Weekly Notes</span>
+            </a>
+            <a href="tips.html">
+                <span class="icon">💡</span>
+                <span>Tips & Reminders</span>
+            </a>
+            <a href="emergency.html">
+                <span class="icon">🚨</span>
+                <span>When to Tell Mindy</span>
+            </a>
+        </nav>
+
+        <main>
+            <h2>✅ Daily Tracker</h2>
+
+            <div class="card card-border-blue">
+                <h3>📅 Select Date</h3>
+                <div class="date-picker">
+                    <input type="date" id="tracker-date" />
+                    <button onclick="loadTrackerData()">Load This Date</button>
+                    <button onclick="setToday()">Today</button>
+                </div>
+                <p style="margin-top: 1rem; color: #666;">Viewing data for: <strong id="current-tracker-date"></strong></p>
+            </div>
+
+            <div class="alert-box">
+                <p>Check off each task as you complete it. Your progress is automatically saved!</p>
+            </div>
+
+            <div class="card card-border-green">
+                <h3>Morning Hygiene</h3>
+                <div class="checkbox-list" id="morning-checks"></div>
+            </div>
+
+            <div class="card card-border-orange">
+                <h3>Meals & Hydration</h3>
+                <div class="checkbox-list" id="meals-checks"></div>
+            </div>
+
+            <div class="card card-border-blue">
+                <h3>Exercise & Therapy</h3>
+                <div class="checkbox-list" id="exercise-checks"></div>
+            </div>
+
+            <div class="card card-border-purple">
+                <h3>Rest Periods (Lying Down)</h3>
+                <div class="checkbox-list" id="rest-checks"></div>
+            </div>
+
+            <div class="card card-border-green">
+                <h3>Evening Hygiene</h3>
+                <div class="checkbox-list" id="evening-checks"></div>
+            </div>
+
+            <div class="card card-border-orange">
+                <h3>📊 Calorie Tracker</h3>
+                <p style="margin-bottom: 1.5rem;">Track what you ate today and the calories in each meal. Goal: 2,000-2,200 calories per day.</p>
+
+                <div style="display: grid; gap: 1.5rem;">
+                    <div style="background: #fff3e0; padding: 1.5rem; border-radius: 12px; border: 2px solid #ff9800;">
+                        <h4 style="color: #ff9800; margin: 0 0 1rem 0;">🍳 Breakfast (~500-600 cal)</h4>
+                        <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: #424242;">What I ate:</label>
+                        <input type="text" id="breakfast-food" placeholder="e.g., Steel-cut oats with berries" style="width: 100%; padding: 0.75rem; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 1.1rem; font-family: 'Atkinson Hyperlegible', sans-serif; margin-bottom: 1rem;">
+                        <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: #424242;">Calories:</label>
+                        <input type="number" id="breakfast-calories" placeholder="500" min="0" style="width: 150px; padding: 0.75rem; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 1.1rem; font-family: 'Atkinson Hyperlegible', sans-serif;">
+                    </div>
+
+                    <div style="background: #f3e5f5; padding: 1.5rem; border-radius: 12px; border: 2px solid #9c27b0;">
+                        <h4 style="color: #9c27b0; margin: 0 0 1rem 0;">🍎 Snack (~250-300 cal)</h4>
+                        <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: #424242;">What I ate:</label>
+                        <input type="text" id="snack-food" placeholder="e.g., Apple with almond butter" style="width: 100%; padding: 0.75rem; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 1.1rem; font-family: 'Atkinson Hyperlegible', sans-serif; margin-bottom: 1rem;">
+                        <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: #424242;">Calories:</label>
+                        <input type="number" id="snack-calories" placeholder="250" min="0" style="width: 150px; padding: 0.75rem; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 1.1rem; font-family: 'Atkinson Hyperlegible', sans-serif;">
+                    </div>
+
+                    <div style="background: #e8f5e9; padding: 1.5rem; border-radius: 12px; border: 2px solid #4caf50;">
+                        <h4 style="color: #4caf50; margin: 0 0 1rem 0;">🥗 Lunch (~600-700 cal)</h4>
+                        <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: #424242;">What I ate:</label>
+                        <input type="text" id="lunch-food" placeholder="e.g., Chicken quinoa bowl" style="width: 100%; padding: 0.75rem; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 1.1rem; font-family: 'Atkinson Hyperlegible', sans-serif; margin-bottom: 1rem;">
+                        <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: #424242;">Calories:</label>
+                        <input type="number" id="lunch-calories" placeholder="650" min="0" style="width: 150px; padding: 0.75rem; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 1.1rem; font-family: 'Atkinson Hyperlegible', sans-serif;">
+                    </div>
+
+                    <div style="background: #e3f2fd; padding: 1.5rem; border-radius: 12px; border: 2px solid #2196f3;">
+                        <h4 style="color: #2196f3; margin: 0 0 1rem 0;">🍽️ Dinner (~600-700 cal)</h4>
+                        <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: #424242;">What I ate:</label>
+                        <input type="text" id="dinner-food" placeholder="e.g., Baked chicken with vegetables" style="width: 100%; padding: 0.75rem; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 1.1rem; font-family: 'Atkinson Hyperlegible', sans-serif; margin-bottom: 1rem;">
+                        <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: #424242;">Calories:</label>
+                        <input type="number" id="dinner-calories" placeholder="650" min="0" style="width: 150px; padding: 0.75rem; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 1.1rem; font-family: 'Atkinson Hyperlegible', sans-serif;">
+                    </div>
+                </div>
+
+                <div style="background: linear-gradient(135deg, #66bb6a, #81c784); color: white; padding: 2rem; border-radius: 12px; margin-top: 2rem; text-align: center;">
+                    <h3 style="color: white; margin: 0 0 0.5rem 0; font-size: 1.6rem;">Total Calories Today</h3>
+                    <div style="font-size: 3rem; font-weight: 700; margin: 0.5rem 0;" id="total-calories">0</div>
+                    <div style="font-size: 1.2rem; opacity: 0.95; margin-top: 0.5rem;">Goal: 2,000-2,200 calories</div>
+                    <div id="calorie-status" style="font-size: 1.3rem; font-weight: 600; margin-top: 1rem; padding: 1rem; background: rgba(255,255,255,0.2); border-radius: 8px;">
+                        Enter your meals above
+                    </div>
+                </div>
+            </div>
+
+            <div class="alert-box" style="border-color: #4caf50; background: linear-gradient(135deg, #e8f5e9, #c8e6c9); text-align: center;">
+                <h3 style="color: #2e7d32;">🎉 Great Job Today, Abigail!</h3>
+                <p>Every checked box is progress. Your data is automatically saved and you can view your history anytime!</p>
+            </div>
+        </main>
+    </div>
+
+    <script src="app.js"></script>
+    <script>
+        // Initialize tracker
+        document.getElementById('tracker-date').value = getTodayString();
+        setToday();
+
+        // Add event listeners for calorie inputs
+        const calorieInputs = ['breakfast-calories', 'snack-calories', 'lunch-calories', 'dinner-calories'];
+        const foodInputs = ['breakfast-food', 'snack-food', 'lunch-food', 'dinner-food'];
+
+        calorieInputs.forEach(id => {
+            document.getElementById(id).addEventListener('input', () => {
+                updateCalorieTotal();
+                saveTrackerData();
+            });
+        });
+
+        foodInputs.forEach(id => {
+            document.getElementById(id).addEventListener('input', saveTrackerData);
+        });
+    </script>
+</body>
+</html>

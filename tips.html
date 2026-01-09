@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home - Abigail's Health Hub</title>
+    <title>Tips & Reminders - Abigail's Health Hub</title>
     <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
 </head>
@@ -15,7 +15,7 @@
 
     <div class="container">
         <nav>
-            <a href="index.html" class="active">
+            <a href="index.html">
                 <span class="icon">🏠</span>
                 <span>Home</span>
             </a>
@@ -51,7 +51,7 @@
                 <span class="icon">📝</span>
                 <span>Weekly Notes</span>
             </a>
-            <a href="tips.html">
+            <a href="tips.html" class="active">
                 <span class="icon">💡</span>
                 <span>Tips & Reminders</span>
             </a>
@@ -62,48 +62,57 @@
         </nav>
 
         <main>
+            <h2>💡 Tips & Success Strategies</h2>
+
             <div class="card card-border-green">
-                <h2>Welcome, Abigail! 💪</h2>
-                <div class="alert-box" style="border-color: #4caf50; background: linear-gradient(135deg, rgba(76, 175, 80, 0.13), rgba(76, 175, 80, 0.07));">
-                    <h3 style="color: #4caf50; font-size: 1.8rem;">Today is <span id="current-day"></span></h3>
-                    <p style="font-size: 1.4rem; font-weight: 600; margin: 0;" id="schedule-type"></p>
-                </div>
+                <h3>😴 Rest is Non-Negotiable</h3>
+                <ul>
+                    <li>Don't skip rest periods even on "good energy" days</li>
+                    <li>Your body needs scheduled recovery to prevent crashes</li>
+                    <li>Rest is PRODUCTIVE - it's how you heal and build capacity</li>
+                </ul>
             </div>
 
-            <div class="alert-box">
-                <h3>💡 Daily Reminder</h3>
+            <div class="card card-border-orange">
+                <h3>🕕 Stop Eating by 6 PM</h3>
                 <ul>
-                    <li><strong>Drink water constantly</strong> - 80-100 oz today!</li>
-                    <li><strong>Movement is safe</strong> - Your body is healing</li>
-                    <li><strong>Only 6 hours lying down</strong> - Rest in a chair otherwise</li>
-                    <li><strong>No eating after 6 PM</strong> - Helps your hormones</li>
+                    <li>Allows 3 hours for digestion before bed</li>
+                    <li>Improves sleep quality significantly</li>
+                    <li>Helps hormone balance (PCOS)</li>
+                    <li>Reduces gout flare risk</li>
                 </ul>
             </div>
 
             <div class="card card-border-blue">
-                <h3>📊 Quick Stats for Today</h3>
-                <div id="home-stats" class="progress-stats"></div>
+                <h3>💪 Movement is Medicine</h3>
+                <ul>
+                    <li>Exercise is teaching your brain that movement is safe</li>
+                    <li>Your body was protecting you; now you're retraining it to trust</li>
+                    <li>Every exercise session is PROOF you're healing</li>
+                    <li>If tremors start, breathe deeply and slow down</li>
+                </ul>
+            </div>
+
+            <div class="card card-border-blue" style="border-color: #00bcd4;">
+                <h3>💧 Hydration is Critical</h3>
+                <ul>
+                    <li>80-100 oz water daily (VERY important for gout)</li>
+                    <li>Dehydration triggers gout flares</li>
+                    <li>Water helps flush uric acid from body</li>
+                    <li>Cherry juice helps reduce gout symptoms</li>
+                </ul>
+            </div>
+
+            <div class="alert-box" style="border-color: #ff9800;">
+                <h3>🌟 Remember This</h3>
+                <p style="font-size: 1.3rem;">Your brain learned "movement = pain" to protect you. Now, with
+                    consistent practice, you're teaching it a new truth: <strong>"Movement is safe. My body is
+                        capable. I am healing."</strong> Every day you follow this schedule is proof of your
+                    strength and courage.</p>
             </div>
         </main>
     </div>
 
     <script src="app.js"></script>
-    <script>
-        // Set current day and schedule type
-        document.getElementById('current-day').textContent = today;
-
-        let scheduleType = '';
-        if (today === 'Monday' || today === 'Wednesday' || today === 'Friday') {
-            scheduleType = 'Gym Day 💪';
-        } else if (today === 'Sunday') {
-            scheduleType = 'Church & Rest Day ⛪';
-        } else {
-            scheduleType = 'Home Exercise Day 🏠';
-        }
-        document.getElementById('schedule-type').textContent = scheduleType;
-
-        // Load today's stats
-        updateHomeStats();
-    </script>
 </body>
 </html>

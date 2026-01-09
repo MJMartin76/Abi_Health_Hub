@@ -1,9 +1,10 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home - Abigail's Health Hub</title>
+    <title>My Schedule - Abigail's Health Hub</title>
     <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
 </head>
@@ -15,11 +16,11 @@
 
     <div class="container">
         <nav>
-            <a href="index.html" class="active">
+            <a href="index.html">
                 <span class="icon">🏠</span>
                 <span>Home</span>
             </a>
-            <a href="schedule.html">
+            <a href="schedule.html" class="active">
                 <span class="icon">📅</span>
                 <span>My Schedule</span>
             </a>
@@ -62,48 +63,42 @@
         </nav>
 
         <main>
-            <div class="card card-border-green">
-                <h2>Welcome, Abigail! 💪</h2>
-                <div class="alert-box" style="border-color: #4caf50; background: linear-gradient(135deg, rgba(76, 175, 80, 0.13), rgba(76, 175, 80, 0.07));">
-                    <h3 style="color: #4caf50; font-size: 1.8rem;">Today is <span id="current-day"></span></h3>
-                    <p style="font-size: 1.4rem; font-weight: 600; margin: 0;" id="schedule-type"></p>
+            <h2>📅 My Weekly Schedule</h2>
+
+            <div class="card">
+                <p style="margin-bottom: 1rem;">Select a day to view the schedule:</p>
+                <div class="day-selector">
+                    <button class="day-button" data-day="Monday">Monday</button>
+                    <button class="day-button" data-day="Tuesday">Tuesday</button>
+                    <button class="day-button" data-day="Wednesday">Wednesday</button>
+                    <button class="day-button" data-day="Thursday">Thursday</button>
+                    <button class="day-button" data-day="Friday">Friday</button>
+                    <button class="day-button" data-day="Saturday">Saturday</button>
+                    <button class="day-button" data-day="Sunday">Sunday</button>
                 </div>
             </div>
 
-            <div class="alert-box">
-                <h3>💡 Daily Reminder</h3>
-                <ul>
-                    <li><strong>Drink water constantly</strong> - 80-100 oz today!</li>
-                    <li><strong>Movement is safe</strong> - Your body is healing</li>
-                    <li><strong>Only 6 hours lying down</strong> - Rest in a chair otherwise</li>
-                    <li><strong>No eating after 6 PM</strong> - Helps your hormones</li>
-                </ul>
-            </div>
-
-            <div class="card card-border-blue">
-                <h3>📊 Quick Stats for Today</h3>
-                <div id="home-stats" class="progress-stats"></div>
-            </div>
+            <div id="schedule-content"></div>
         </main>
     </div>
 
     <script src="app.js"></script>
     <script>
-        // Set current day and schedule type
-        document.getElementById('current-day').textContent = today;
+        // Initialize schedule page
+        const dayButtons = document.querySelectorAll('.day-button');
+        dayButtons.forEach(button => {
+            if (button.dataset.day === today) {
+                button.classList.add('today');
+                button.classList.add('active');
+                showSchedule(today);
+            }
 
-        let scheduleType = '';
-        if (today === 'Monday' || today === 'Wednesday' || today === 'Friday') {
-            scheduleType = 'Gym Day 💪';
-        } else if (today === 'Sunday') {
-            scheduleType = 'Church & Rest Day ⛪';
-        } else {
-            scheduleType = 'Home Exercise Day 🏠';
-        }
-        document.getElementById('schedule-type').textContent = scheduleType;
-
-        // Load today's stats
-        updateHomeStats();
+            button.addEventListener('click', () => {
+                dayButtons.forEach(btn => btn.classList.remove('active'));
+                button.classList.add('active');
+                showSchedule(button.dataset.day);
+            });
+        });
     </script>
 </body>
 </html>

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home - Abigail's Health Hub</title>
+    <title>Weekly Notes - Abigail's Health Hub</title>
     <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
 </head>
@@ -15,7 +15,7 @@
 
     <div class="container">
         <nav>
-            <a href="index.html" class="active">
+            <a href="index.html">
                 <span class="icon">🏠</span>
                 <span>Home</span>
             </a>
@@ -47,7 +47,7 @@
                 <span class="icon">📊</span>
                 <span>Progress History</span>
             </a>
-            <a href="notes.html">
+            <a href="notes.html" class="active">
                 <span class="icon">📝</span>
                 <span>Weekly Notes</span>
             </a>
@@ -62,48 +62,47 @@
         </nav>
 
         <main>
-            <div class="card card-border-green">
-                <h2>Welcome, Abigail! 💪</h2>
-                <div class="alert-box" style="border-color: #4caf50; background: linear-gradient(135deg, rgba(76, 175, 80, 0.13), rgba(76, 175, 80, 0.07));">
-                    <h3 style="color: #4caf50; font-size: 1.8rem;">Today is <span id="current-day"></span></h3>
-                    <p style="font-size: 1.4rem; font-weight: 600; margin: 0;" id="schedule-type"></p>
-                </div>
-            </div>
+            <h2>📝 Weekly Notes & Reflection</h2>
 
             <div class="alert-box">
-                <h3>💡 Daily Reminder</h3>
-                <ul>
-                    <li><strong>Drink water constantly</strong> - 80-100 oz today!</li>
-                    <li><strong>Movement is safe</strong> - Your body is healing</li>
-                    <li><strong>Only 6 hours lying down</strong> - Rest in a chair otherwise</li>
-                    <li><strong>No eating after 6 PM</strong> - Helps your hormones</li>
-                </ul>
+                <p>Use this space to track your progress each week. Write down what's working, what's challenging,
+                    and what you're proud of. Print this page or write in a journal!</p>
+            </div>
+
+            <div class="card card-border-green">
+                <h3>Energy Patterns</h3>
+                <p><strong>Best time of day:</strong> _______________________</p>
+                <p><strong>Worst time of day:</strong> _______________________</p>
+                <p><strong>Activities that help:</strong> _______________________</p>
+                <p><strong>Activities that drain:</strong> _______________________</p>
+            </div>
+
+            <div class="card card-border-orange">
+                <h3>Gout & Tremor Tracking</h3>
+                <p><strong>Joint pain level (1-10):</strong> _______________________</p>
+                <p><strong>Tremor severity (1-10):</strong> _______________________</p>
+                <p><strong>What triggered tremors:</strong> _______________________</p>
+                <p><strong>What helped calm tremors:</strong> _______________________</p>
+                <p><strong>Water intake today:</strong> _______ oz</p>
             </div>
 
             <div class="card card-border-blue">
-                <h3>📊 Quick Stats for Today</h3>
-                <div id="home-stats" class="progress-stats"></div>
+                <h3>Therapy Progress</h3>
+                <p><strong>Speech therapy wins:</strong> _______________________</p>
+                <p><strong>OT exercises completed:</strong> _______________________</p>
+                <p><strong>PT improvements:</strong> _______________________</p>
+                <p><strong>Skills I'm mastering:</strong> _______________________</p>
+            </div>
+
+            <div class="card card-border-purple">
+                <h3>Goals for Next Week</h3>
+                <p><strong>1.</strong> _______________________</p>
+                <p><strong>2.</strong> _______________________</p>
+                <p><strong>3.</strong> _______________________</p>
             </div>
         </main>
     </div>
 
     <script src="app.js"></script>
-    <script>
-        // Set current day and schedule type
-        document.getElementById('current-day').textContent = today;
-
-        let scheduleType = '';
-        if (today === 'Monday' || today === 'Wednesday' || today === 'Friday') {
-            scheduleType = 'Gym Day 💪';
-        } else if (today === 'Sunday') {
-            scheduleType = 'Church & Rest Day ⛪';
-        } else {
-            scheduleType = 'Home Exercise Day 🏠';
-        }
-        document.getElementById('schedule-type').textContent = scheduleType;
-
-        // Load today's stats
-        updateHomeStats();
-    </script>
 </body>
 </html>
