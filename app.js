@@ -13,7 +13,6 @@ blurDiv.style.setProperty('left', '0', 'important');
 blurDiv.style.setProperty('right', '0', 'important');
 blurDiv.style.setProperty('backdrop-filter', 'blur(8px)', 'important');
 blurDiv.style.setProperty('z-index', '99999', 'important');
-document.body.appendChild(blurDiv);
 
 async function verifyToken() {
 	try {
