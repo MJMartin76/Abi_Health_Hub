@@ -68,8 +68,8 @@
                 <h3>📅 Select Date</h3>
                 <div class="date-picker">
                     <input type="date" id="tracker-date" />
-                    <button onclick="loadTrackerData()">Load This Date</button>
-                    <button onclick="setToday()">Today</button>
+                    <button onclick="loadTrackerDataForDate()">Load This Date</button>
+                    <button onclick="initializeTrackerView()">Today</button>
                 </div>
                 <p style="margin-top: 1rem; color: #666;">Viewing data for: <strong id="current-tracker-date"></strong></p>
             </div>
@@ -108,42 +108,42 @@
                 <p style="margin-bottom: 1.5rem;">Track what you ate today and the calories in each meal. Goal: 2,000-2,200 calories per day.</p>
 
                 <div style="display: grid; gap: 1.5rem;">
-                    <div style="background: #fff3e0; padding: 1.5rem; border-radius: 12px; border: 2px solid #ff9800;">
-                        <h4 style="color: #ff9800; margin: 0 0 1rem 0;">🍳 Breakfast (~500-600 cal)</h4>
-                        <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: #424242;">What I ate:</label>
-                        <input type="text" id="breakfast-food" placeholder="e.g., Steel-cut oats with berries" style="width: 100%; padding: 0.75rem; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 1.1rem; font-family: 'Atkinson Hyperlegible', sans-serif; margin-bottom: 1rem;">
-                        <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: #424242;">Calories:</label>
-                        <input type="number" id="breakfast-calories" placeholder="500" min="0" style="width: 150px; padding: 0.75rem; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 1.1rem; font-family: 'Atkinson Hyperlegible', sans-serif;">
-                    </div>
+					<div style="background: #fff3e0; padding: 1.5rem; border-radius: 12px; border: 2px solid #ff9800;">
+						<h4 style="color: #ff9800; margin: 0 0 1rem 0;">🍳 Breakfast (~500-600 cal)</h4>
+						<label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: #424242;">What I ate:</label>
+						<input type="text" id="breakfast_food" placeholder="e.g., Steel-cut oats with berries" style="width: 100%; padding: 0.75rem; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 1.1rem; font-family: 'Atkinson Hyperlegible', sans-serif; margin-bottom: 1rem;">
+						<label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: #424242;">Calories:</label>
+						<input type="number" id="breakfast_cal" placeholder="500" min="0" style="width: 150px; padding: 0.75rem; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 1.1rem; font-family: 'Atkinson Hyperlegible', sans-serif;">
+					</div>
 
-                    <div style="background: #f3e5f5; padding: 1.5rem; border-radius: 12px; border: 2px solid #9c27b0;">
-                        <h4 style="color: #9c27b0; margin: 0 0 1rem 0;">🍎 Snack (~250-300 cal)</h4>
-                        <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: #424242;">What I ate:</label>
-                        <input type="text" id="snack-food" placeholder="e.g., Apple with almond butter" style="width: 100%; padding: 0.75rem; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 1.1rem; font-family: 'Atkinson Hyperlegible', sans-serif; margin-bottom: 1rem;">
-                        <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: #424242;">Calories:</label>
-                        <input type="number" id="snack-calories" placeholder="250" min="0" style="width: 150px; padding: 0.75rem; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 1.1rem; font-family: 'Atkinson Hyperlegible', sans-serif;">
-                    </div>
+					<div style="background: #f3e5f5; padding: 1.5rem; border-radius: 12px; border: 2px solid #9c27b0;">
+						<h4 style="color: #9c27b0; margin: 0 0 1rem 0;">🍎 Snack (~250-300 cal)</h4>
+						<label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: #424242;">What I ate:</label>
+						<input type="text" id="snack_food" placeholder="e.g., Apple with almond butter" style="width: 100%; padding: 0.75rem; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 1.1rem; font-family: 'Atkinson Hyperlegible', sans-serif; margin-bottom: 1rem;">
+						<label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: #424242;">Calories:</label>
+						<input type="number" id="snack_cal" placeholder="250" min="0" style="width: 150px; padding: 0.75rem; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 1.1rem; font-family: 'Atkinson Hyperlegible', sans-serif;">
+					</div>
 
-                    <div style="background: #e8f5e9; padding: 1.5rem; border-radius: 12px; border: 2px solid #4caf50;">
-                        <h4 style="color: #4caf50; margin: 0 0 1rem 0;">🥗 Lunch (~600-700 cal)</h4>
-                        <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: #424242;">What I ate:</label>
-                        <input type="text" id="lunch-food" placeholder="e.g., Chicken quinoa bowl" style="width: 100%; padding: 0.75rem; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 1.1rem; font-family: 'Atkinson Hyperlegible', sans-serif; margin-bottom: 1rem;">
-                        <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: #424242;">Calories:</label>
-                        <input type="number" id="lunch-calories" placeholder="650" min="0" style="width: 150px; padding: 0.75rem; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 1.1rem; font-family: 'Atkinson Hyperlegible', sans-serif;">
-                    </div>
+					<div style="background: #e8f5e9; padding: 1.5rem; border-radius: 12px; border: 2px solid #4caf50;">
+						<h4 style="color: #4caf50; margin: 0 0 1rem 0;">🥗 Lunch (~600-700 cal)</h4>
+						<label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: #424242;">What I ate:</label>
+						<input type="text" id="lunch_food" placeholder="e.g., Chicken quinoa bowl" style="width: 100%; padding: 0.75rem; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 1.1rem; font-family: 'Atkinson Hyperlegible', sans-serif; margin-bottom: 1rem;">
+						<label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: #424242;">Calories:</label>
+						<input type="number" id="lunch_cal" placeholder="650" min="0" style="width: 150px; padding: 0.75rem; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 1.1rem; font-family: 'Atkinson Hyperlegible', sans-serif;">
+					</div>
 
-                    <div style="background: #e3f2fd; padding: 1.5rem; border-radius: 12px; border: 2px solid #2196f3;">
-                        <h4 style="color: #2196f3; margin: 0 0 1rem 0;">🍽️ Dinner (~600-700 cal)</h4>
-                        <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: #424242;">What I ate:</label>
-                        <input type="text" id="dinner-food" placeholder="e.g., Baked chicken with vegetables" style="width: 100%; padding: 0.75rem; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 1.1rem; font-family: 'Atkinson Hyperlegible', sans-serif; margin-bottom: 1rem;">
-                        <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: #424242;">Calories:</label>
-                        <input type="number" id="dinner-calories" placeholder="650" min="0" style="width: 150px; padding: 0.75rem; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 1.1rem; font-family: 'Atkinson Hyperlegible', sans-serif;">
-                    </div>
+					<div style="background: #e3f2fd; padding: 1.5rem; border-radius: 12px; border: 2px solid #2196f3;">
+						<h4 style="color: #2196f3; margin: 0 0 1rem 0;">🍽️ Dinner (~600-700 cal)</h4>
+						<label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: #424242;">What I ate:</label>
+						<input type="text" id="dinner_food" placeholder="e.g., Baked chicken with vegetables" style="width: 100%; padding: 0.75rem; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 1.1rem; font-family: 'Atkinson Hyperlegible', sans-serif; margin-bottom: 1rem;">
+						<label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: #424242;">Calories:</label>
+						<input type="number" id="dinner_cal" placeholder="650" min="0" style="width: 150px; padding: 0.75rem; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 1.1rem; font-family: 'Atkinson Hyperlegible', sans-serif;">
+					</div>
                 </div>
 
                 <div style="background: linear-gradient(135deg, #66bb6a, #81c784); color: white; padding: 2rem; border-radius: 12px; margin-top: 2rem; text-align: center;">
                     <h3 style="color: white; margin: 0 0 0.5rem 0; font-size: 1.6rem;">Total Calories Today</h3>
-                    <div style="font-size: 3rem; font-weight: 700; margin: 0.5rem 0;" id="total-calories">0</div>
+                    <div style="font-size: 3rem; font-weight: 700; margin: 0.5rem 0;" id="total_cal">0</div>
                     <div style="font-size: 1.2rem; opacity: 0.95; margin-top: 0.5rem;">Goal: 2,000-2,200 calories</div>
                     <div id="calorie-status" style="font-size: 1.3rem; font-weight: 600; margin-top: 1rem; padding: 1rem; background: rgba(255,255,255,0.2); border-radius: 8px;">
                         Enter your meals above
@@ -158,26 +158,12 @@
         </main>
     </div>
 
+    <script src="AirtableService.js"></script>
     <script src="app.js"></script>
     <script>
         // Initialize tracker
         document.getElementById('tracker-date').value = getTodayString();
-        setToday();
-
-        // Add event listeners for calorie inputs
-        const calorieInputs = ['breakfast-calories', 'snack-calories', 'lunch-calories', 'dinner-calories'];
-        const foodInputs = ['breakfast-food', 'snack-food', 'lunch-food', 'dinner-food'];
-
-        calorieInputs.forEach(id => {
-            document.getElementById(id).addEventListener('input', () => {
-                updateCalorieTotal();
-                saveTrackerData();
-            });
-        });
-
-        foodInputs.forEach(id => {
-            document.getElementById(id).addEventListener('input', saveTrackerData);
-        });
+        initializeTrackerView();
     </script>
 </body>
 </html>

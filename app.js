@@ -40,8 +40,22 @@ async function listKeys(prefix) {
 }
 
 // Date helpers
+/**
+ * @param {Date} date 
+ * @returns 
+ */
 function formatDate(date) {
-    return date.toISOString().split('T')[0];
+	var d = new Date(date),
+        month = '' + (d.getMonth() + 1),
+        day = '' + d.getDate(),
+        year = d.getFullYear();
+
+    if (month.length < 2) 
+        month = '0' + month;
+    if (day.length < 2) 
+        day = '0' + day;
+
+    return [year, month, day].join('-');
 }
 
 function getTodayString() {
@@ -54,63 +68,98 @@ const today = days[new Date().getDay()];
 
 // Tracker data structure
 const trackerData = {
-    'morning-checks': [
-        'Compression socks put on FIRST',
-        'Used bathroom properly',
-        'Washed face',
-        'Brushed teeth (2 minutes)',
-        'Combed hair, pulled back from face',
-        'Got dressed in clean clothes',
-        'Applied deodorant',
-        'Drank 16 oz water'
-    ],
-    'meals-checks': [
-        'Ate breakfast',
-        'Post-breakfast movement (10 min)',
-        'Ate snack',
-        'Ate lunch',
-        'Post-lunch movement (10 min)',
-        'Ate dinner (BEFORE 6 PM)',
-        'Post-dinner movement (10 min)',
-        'Drank 80-100 oz water today'
-    ],
-    'exercise-checks': [
-        'Completed PT/gym session OR exercise bursts',
-        'Speech therapy exercises',
-        'OT exercises',
-        'All movement felt safe'
-    ],
-    'rest-checks': [
-        'REST #1', 'REST #2', 'REST #3', 'REST #4', 'REST #5',
-        'REST #6', 'REST #7', 'REST #8', 'REST #9 (if applicable)',
-        'REST #10 (if applicable)', 'Did NOT lie down outside scheduled times'
-    ],
-    'evening-checks': [
-        'Showered OR washed face/freshened up',
-        'Brushed teeth (2 minutes)',
-        'Flossed',
-        'Used mouthwash',
-        'Washed face',
-        'Washed feet',
-        'Moisturized',
-        'Removed compression socks',
-        'Evening breathing exercises'
-    ]
+	'morning-checks': [
+		{ key: 'check_socks_on', label: 'Compression socks put on FIRST' },
+		{ key: 'check_bathroom', label: 'Used bathroom properly' },
+		{ key: 'check_wash_face', label: 'Washed face' },
+		{ key: 'check_brush_teeth_am', label: 'Brushed teeth (2 minutes)' },
+		{ key: 'check_comb_hair', label: 'Combed hair, pulled back from face' },
+		{ key: 'check_get_dressed', label: 'Got dressed in clean clothes' },
+		{ key: 'check_deodorant', label: 'Applied deodorant' },
+		{ key: 'check_water_am', label: 'Drank 16 oz water' }
+	],
+	'meals-checks': [
+		{ key: 'check_breakfast', label: 'Ate breakfast' },
+		{ key: 'check_breakfast_movement', label: 'Post-breakfast movement (10 min)' },
+		{ key: 'check_snack', label: 'Ate snack' },
+		{ key: 'check_lunch', label: 'Ate lunch' },
+		{ key: 'check_lunch_movement', label: 'Post-lunch movement (10 min)' },
+		{ key: 'check_dinner', label: 'Ate dinner (BEFORE 6 PM)' },
+		{ key: 'check_dinner_movement', label: 'Post-dinner movement (10 min)' },
+		{ key: 'check_water_total', label: 'Drank 80-100 oz water today' }
+	],
+	'exercise-checks': [
+		{ key: 'check_pt_gym_exercise', label: 'Completed PT/gym session OR exercise bursts' },
+		{ key: 'check_speech_therapy', label: 'Speech therapy exercises' },
+		{ key: 'check_ot_exercise', label: 'OT exercises' },
+		{ key: 'check_movement_safe', label: 'All movement felt safe' }
+	],
+	'rest-checks': [
+		{ key: 'check_rest_1', label: 'REST #1' },
+		{ key: 'check_rest_2', label: 'REST #2' },
+		{ key: 'check_rest_3', label: 'REST #3' },
+		{ key: 'check_rest_4', label: 'REST #4' },
+		{ key: 'check_rest_5', label: 'REST #5' },
+		{ key: 'check_rest_6', label: 'REST #6' },
+		{ key: 'check_rest_7', label: 'REST #7' },
+		{ key: 'check_rest_8', label: 'REST #8' },
+		{ key: 'check_rest_9', label: 'REST #9 (if applicable)' },
+		{ key: 'check_rest_10', label: 'REST #10 (if applicable)' },
+		{ key: 'check_unscheduled_lie_down', label: 'Did NOT lie down outside scheduled times' }
+	],
+	'evening-checks': [
+		{ key: 'check_evening_clean', label: 'Showered OR washed face/freshened up' },
+		{ key: 'check_evening_brush_teeth', label: 'Brushed teeth (2 minutes)' },
+		{ key: 'check_floss', label: 'Flossed' },
+		{ key: 'check_mouthwash', label: 'Used mouthwash' },
+		{ key: 'check_evening_wash_face', label: 'Washed face' },
+		{ key: 'check_wash_feet', label: 'Washed feet' },
+		{ key: 'check_moisturize', label: 'Moisturized' },
+		{ key: 'check_socks_off', label: 'Removed compression socks' },
+		{ key: 'check_evening_breathing', label: 'Evening breathing exercises' }
+	]
 };
+
+const calorieData = [
+	{ key: 'breakfast_food', label: 'Breakfast Food' },
+	{ key: 'breakfast_cal', label: 'Breakfast Calories', type: 'calories' },
+	{ key: 'snack_food', label: 'Snack Food' },
+	{ key: 'snack_cal', label: 'Snack Calories', type: 'calories' },
+	{ key: 'lunch_food', label: 'Lunch Food' },
+	{ key: 'lunch_cal', label: 'Lunch Calories', type: 'calories' },
+	{ key: 'dinner_food', label: 'Dinner Food' },
+	{ key: 'dinner_cal', label: 'Dinner Calories', type: 'calories' }
+];
 
 // Tracker functions
 let currentTrackerDate = getTodayString();
 
-function setToday() {
+async function initializeTrackerView() {
+	await loadTrackerData();
     currentTrackerDate = getTodayString();
     const dateInput = document.getElementById('tracker-date');
     if (dateInput) {
         dateInput.value = currentTrackerDate;
     }
-    loadTrackerData();
+    loadTrackerDataForDate();
 }
 
+/** Dictionary of daily tracking data by date */
+const TRACKER_DATA = {};
 async function loadTrackerData() {
+	const allRecords = await AirtableService.loadTable('TRACKERS');
+	console.log(allRecords)
+	for (const record of allRecords) {
+		const data = {
+			recordId: record.recordId,
+			...record,
+		};
+		TRACKER_DATA[data.date] = data;
+	}
+	console.log(TRACKER_DATA)
+}
+
+async function loadTrackerDataForDate() {
     const dateInput = document.getElementById('tracker-date');
     if (dateInput && dateInput.value) {
         currentTrackerDate = dateInput.value;
@@ -123,68 +172,52 @@ async function loadTrackerData() {
         });
     }
 
-    const storageKey = `tracker_${currentTrackerDate}`;
-    const savedData = await loadData(storageKey);
+    const savedData = TRACKER_DATA[currentTrackerDate];
 
-    Object.keys(trackerData).forEach(category => {
-        const container = document.getElementById(category);
-        if (!container) return;
-        
-        container.innerHTML = '';
-        
-        trackerData[category].forEach((item, index) => {
-            const div = document.createElement('div');
-            div.className = 'checkbox-item';
-            const id = `${category}-${index}`;
-            const isChecked = savedData && savedData[category] && savedData[category][index];
+	Object.keys(trackerData).forEach(category => {
+		const container = document.getElementById(category);
+		if (!container) return;
+		
+		container.innerHTML = '';
+		
+		trackerData[category].forEach((item, index) => {
+			const div = document.createElement('div');
+			div.className = 'checkbox-item';
+			const id = `${category}-${index}`;
+			const isChecked = savedData && savedData[item.key];
 
-            if (isChecked) {
-                div.classList.add('checked');
-            }
+			if (isChecked) {
+				div.classList.add('checked');
+			}
 
-            div.innerHTML = `
-                <input type="checkbox" id="${id}" ${isChecked ? 'checked' : ''} />
-                <label for="${id}">${item}</label>
-            `;
+			div.innerHTML = `
+				<input type="checkbox" id="${id}" ${isChecked ? 'checked' : ''} />
+				<label for="${id}">${item.label}</label>
+			`;
 
-            const checkbox = div.querySelector('input');
-            checkbox.addEventListener('change', async (e) => {
-                if (e.target.checked) {
-                    div.classList.add('checked');
-                } else {
-                    div.classList.remove('checked');
-                }
-                await saveTrackerData();
-            });
+			const checkbox = div.querySelector('input');
+			checkbox.addEventListener('change', async (e) => {
+				if (e.target.checked) {
+					div.classList.add('checked');
+				} else {
+					div.classList.remove('checked');
+				}
+				await saveTrackerData();
+			});
 
-            container.appendChild(div);
-        });
-    });
+			container.appendChild(div);
+		});
+	});
 
-    // Load calorie data
-    if (savedData && savedData.calories) {
-        const inputs = {
-            'breakfast-food': savedData.calories.breakfastFood || '',
-            'breakfast-calories': savedData.calories.breakfastCal || '',
-            'snack-food': savedData.calories.snackFood || '',
-            'snack-calories': savedData.calories.snackCal || '',
-            'lunch-food': savedData.calories.lunchFood || '',
-            'lunch-calories': savedData.calories.lunchCal || '',
-            'dinner-food': savedData.calories.dinnerFood || '',
-            'dinner-calories': savedData.calories.dinnerCal || ''
-        };
-        
-        Object.keys(inputs).forEach(id => {
-            const element = document.getElementById(id);
-            if (element) element.value = inputs[id];
-        });
-    } else {
-        ['breakfast-food', 'breakfast-calories', 'snack-food', 'snack-calories', 
-         'lunch-food', 'lunch-calories', 'dinner-food', 'dinner-calories'].forEach(id => {
-            const element = document.getElementById(id);
-            if (element) element.value = '';
-        });
-    }
+	// Load calorie data
+	calorieData.forEach(item => {
+		const element = document.getElementById(item.key);
+		if (element) {
+			element.value = savedData && savedData[item.key] ? savedData[item.key] : '';
+			element.removeEventListener('input', debounceSaveTrackerData);
+			element.addEventListener('input', debounceSaveTrackerData);
+		}
+	});
     
     updateCalorieTotal();
 }
@@ -192,33 +225,52 @@ async function loadTrackerData() {
 async function saveTrackerData() {
     const data = {};
     
-    Object.keys(trackerData).forEach(category => {
-        data[category] = [];
-        trackerData[category].forEach((item, index) => {
-            const checkbox = document.getElementById(`${category}-${index}`);
-            data[category].push(checkbox ? checkbox.checked : false);
-        });
-    });
+	Object.keys(trackerData).forEach(category => {
+		trackerData[category].forEach((item, index) => {
+			const checkbox = document.getElementById(`${category}-${index}`);
+			if (checkbox) {
+				data[item.key] = checkbox.checked;
+			}
+		});
+	});
 
     // Save calorie data
-    data.calories = {
-        breakfastFood: document.getElementById('breakfast-food')?.value || '',
-        breakfastCal: document.getElementById('breakfast-calories')?.value || '',
-        snackFood: document.getElementById('snack-food')?.value || '',
-        snackCal: document.getElementById('snack-calories')?.value || '',
-        lunchFood: document.getElementById('lunch-food')?.value || '',
-        lunchCal: document.getElementById('lunch-calories')?.value || '',
-        dinnerFood: document.getElementById('dinner-food')?.value || '',
-        dinnerCal: document.getElementById('dinner-calories')?.value || ''
-    };
+	calorieData.forEach(item => {
+		const element = document.getElementById(item.key);
+		if (element) {
+			data[item.key] = item.type === 'calories' ? Number(element.value) : element.value;
+		}
+	});
 
-    const storageKey = `tracker_${currentTrackerDate}`;
-    await saveData(storageKey, data);
+	const savedRecord = TRACKER_DATA[currentTrackerDate];
+	const newRecord = {
+		recordId: savedRecord?.recordId,
+		...data,
+		date: currentTrackerDate,
+	}
+	const [updatedRecord] = await AirtableService.upsertRecords('TRACKERS', [newRecord]);
+	if (updatedRecord) {
+		TRACKER_DATA[updatedRecord.date] = updatedRecord;
+	}
+	updateCalorieTotal();
 }
+
+
+const inputDebounceTime = 1000;
+let saveTrackerTimeout = null;
+function debounceSaveTrackerData() {
+	if (saveTrackerTimeout) return;
+	console.log("setting timeout")
+	saveTrackerTimeout = setTimeout(async () => {
+		await saveTrackerData();
+		saveTrackerTimeout = null;
+	}, inputDebounceTime);
+}
+
 
 // Calorie tracking
 function updateCalorieTotal() {
-    const calorieInputs = ['breakfast-calories', 'snack-calories', 'lunch-calories', 'dinner-calories'];
+    const calorieInputs = calorieData.filter(d => d.type === 'calories').map(d => d.key);
     let total = 0;
     
     calorieInputs.forEach(id => {
@@ -227,7 +279,7 @@ function updateCalorieTotal() {
         total += value;
     });
 
-    const totalElement = document.getElementById('total-calories');
+    const totalElement = document.getElementById('total_cal');
     if (totalElement) {
         totalElement.textContent = total;
     }
