@@ -2,7 +2,6 @@ document.write(
     '<script src="https://cdn.jsdelivr.net/npm/airtable@0.11.4/lib/airtable.umd.min.js"></script>'
 );
 
-const API_KEY_CIPHER = 'p1a2t3A445m6J7T8j9Z0r1g2C3K4K576H7.819208192e324850607c849706172a344858637084900a122235415f6571809b0e122f3e415f6e72819c0d1226384e5263788194021329354b5d62738d9b001d2';
 const BASE_ID = 'appFUYHViQUU0fu26';
 
 const TABLES = {
@@ -14,17 +13,42 @@ const TABLES = {
 const BATCH_SIZE = 10;
 
 const AirtableService = {
-    constructor () {
-        this.isInitialized = false;
-    },
+    isInitialized: false,
 
     _init() {
 		// REQUIRES THE AIRTABLE SDK TO BE LOADED TO DOC PRIOR
-		const apiKey = API_KEY_CIPHER.split('').filter((_, i) => i % 2 === 0).join('');
+		const apiKey = this.getToken();
         this._base = new Airtable({apiKey}).base(BASE_ID);
         this.isInitialized = true;
         return this._base;
     },
+
+	getToken() {
+		return localStorage.getItem('airtable_token');
+	},
+
+	setToken(token) {
+		localStorage.setItem('airtable_token', token);
+		this._init();
+	},
+
+	async validateToken() {
+		try {
+			// should throw error if token is invalid
+			this._init();
+			const res = await new Promise((res, rej) => {
+				fetch(
+					`https://api.airtable.com/v0/meta/bases/${BASE_ID}/tables`,
+					{ headers: { 'Authorization': 'Bearer ' + this.getToken()} }
+				).then(res).catch(rej);
+			});
+			return res.ok;
+		}
+		catch (e) {
+			console.error(e)
+			return false;
+		}
+	},
 
     get base() {
         return this._base ?? this._init();

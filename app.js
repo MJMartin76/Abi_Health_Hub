@@ -1,3 +1,44 @@
+// console.log(localStorage.getItem('airtable_token'))
+// alert(localStorage.getItem('airtable_token'))
+
+// Before anything, verify access token. Also do this periodically
+const blurDiv = document.createElement('div');
+blurDiv.style.setProperty('display', 'block', 'important');
+blurDiv.style.setProperty('opacity', '1', 'important');
+blurDiv.style.setProperty('visibility', 'visible', 'important');
+blurDiv.style.setProperty('position', 'fixed', 'important');
+blurDiv.style.setProperty('top', '0', 'important');
+blurDiv.style.setProperty('bottom', '0', 'important');
+blurDiv.style.setProperty('left', '0', 'important');
+blurDiv.style.setProperty('right', '0', 'important');
+blurDiv.style.setProperty('backdrop-filter', 'blur(8px)', 'important');
+blurDiv.style.setProperty('z-index', '99999', 'important');
+document.body.appendChild(blurDiv);
+
+async function verifyToken() {
+	try {
+		const isValid = await AirtableService.validateToken();
+		console.log(isValid)
+		if (!isValid) {
+			document.body.appendChild(blurDiv);
+			// allow DOM to re-render
+			await new Promise(res => setTimeout(res, 100));
+			document.body.style.overflow = "hidden";
+			const newToken = prompt('Please provide an access token');
+			alert(newToken)
+			AirtableService.setToken(newToken);
+		}
+		else {
+			blurDiv.remove();
+			document.body.style.overflow = "unset";
+		}
+	}
+	finally {
+		setTimeout(verifyToken, 10000);
+	}
+}
+setTimeout(verifyToken, 10);
+
 // Date helpers
 /**
  * @param {Date} date 
