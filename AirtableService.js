@@ -7,6 +7,7 @@ const BASE_ID = 'appFUYHViQUU0fu26';
 
 const TABLES = {
     TRACKERS: 'tblrGFuwTXBPT1nR9',
+    JOURNAL: 'tblVPu2AG8KkhpXC2',
     WEEKLY_NOTES: 'tblxtK0MO0FX7QBjO',
 };
 
@@ -29,8 +30,8 @@ const AirtableService = {
         return this._base ?? this._init();
     },
 
-	async loadTable(tableName, options = {}) {
-        return (await this.base(TABLES[tableName]).select(options).all()).map(this.recordToJs);
+	async loadTable(tableIdentifier, options = {}) {
+        return (await this.base(TABLES[tableIdentifier] || tableIdentifier).select(options).all()).map(this.recordToJs);
 	},
 
     async upsertRecords(tableName, records) {
@@ -40,11 +41,11 @@ const AirtableService = {
 		let savedRecords = [];
 
         await this.batchOperation(toUpdate.map(this.jsToRecord), async batch => {
-            savedRecords = savedRecords.concat(await this.base(TABLES[tableName]).update(batch));
+            savedRecords = savedRecords.concat(await this.base(TABLES[tableName] || tableName).update(batch));
         });
 
         await this.batchOperation(toCreate.map(this.jsToRecord), async batch => {
-            savedRecords = savedRecords.concat(await this.base(TABLES[tableName]).create(batch));
+            savedRecords = savedRecords.concat(await this.base(TABLES[tableName] || tableName).create(batch));
         });
 
 		return savedRecords.map(this.recordToJs);

@@ -103,6 +103,40 @@
         }
         document.getElementById('schedule-type').textContent = scheduleType;
 
+
+		async function updateHomeStats() {
+			await loadTrackerData();
+			const todayData = TRACKER_DATA[getTodayString()];
+
+			const statsContainer = document.getElementById('home-stats');
+			if (!statsContainer) return;
+
+			if (!todayData) {
+				statsContainer.innerHTML = '<p style="color: #666;">No data tracked for today yet</p>';
+				return;
+			}
+
+			const checked = countChecked(todayData);
+			const total = countTotal(todayData);
+			const percent = total > 0 ? Math.round((checked / total) * 100) : 0;
+			const calories = calculateTotalCalories(todayData);
+
+			statsContainer.innerHTML = `
+				<div class="stat-card">
+					<div class="stat-number">${percent}%</div>
+					<div class="stat-label">Tasks Complete</div>
+				</div>
+				<div class="stat-card">
+					<div class="stat-number">${checked}/${total}</div>
+					<div class="stat-label">Checked Today</div>
+				</div>
+				<div class="stat-card">
+					<div class="stat-number">${calories}</div>
+					<div class="stat-label">Calories</div>
+				</div>
+			`;
+		}
+
         // Load today's stats
         updateHomeStats();
     </script>

@@ -84,6 +84,543 @@
 	
     <script src="app.js"></script>
     <script>
+
+		// Schedule page functions - COMPLETE WITH ALL DETAILS
+		function showSchedule(day) {
+			const scheduleContent = document.getElementById('schedule-content');
+			if (!scheduleContent) return;
+			
+			let html = '';
+
+			if (day === 'Monday' || day === 'Wednesday' || day === 'Friday') {
+				html = `
+					<div class="card" style="background: linear-gradient(135deg, #4caf50, #66bb6a); color: white; text-align: center;">
+						<h3 style="color: white; margin: 0;">💪 Gym Day Schedule</h3>
+						<p style="margin: 0.5rem 0 0 0; opacity: 0.95;">You go to the gym with Mindy</p>
+					</div>
+
+					<h3>Morning Block (8:30 AM - 12:30 PM)</h3>
+					
+					<div class="schedule-block">
+						<div class="schedule-time">8:30 - 9:00 AM</div>
+						<div class="schedule-title">🌅 Wake Up & Morning Personal Care</div>
+						<div class="schedule-details">✓ Compression socks first ✓ Bathroom ✓ Wash face ✓ Brush teeth (2 min) ✓ Comb hair ✓ Get dressed ✓ Apply deodorant ✓ Drink 16 oz water</div>
+					</div>
+
+					<div class="schedule-block meal">
+						<div class="schedule-time">9:00 - 9:45 AM</div>
+						<div class="schedule-title">🍳 Breakfast (Mindy has this ready)</div>
+						<div class="schedule-details">PCOS & gout-friendly, egg-free meal. Examples: Steel-cut oats with berries, smoothie bowl, avocado toast.</div>
+					</div>
+
+					<div class="schedule-block">
+						<div class="schedule-time">9:45 - 10:00 AM</div>
+						<div class="schedule-title">🚶 Post-Meal Movement & Kitchen Help</div>
+						<div class="schedule-details">10-minute gentle walk OR calf raises, squats, light stretching. Help Mindy clean up.</div>
+					</div>
+
+					<div class="schedule-block rest">
+						<div class="schedule-time">10:00 - 10:30 AM</div>
+						<div class="schedule-title">🛏️ LYING DOWN REST #1</div>
+						<div class="schedule-details">Complete rest, lying flat. Set timer for 30 minutes. NO screens - just rest.</div>
+					</div>
+
+					<div class="schedule-block">
+						<div class="schedule-time">10:30 - 11:00 AM</div>
+						<div class="schedule-title">💬 Speech Therapy Exercises (SITTING)</div>
+						<div class="schedule-details">Follow your speech therapy app. Reading aloud, vocal exercises, breathing techniques.</div>
+					</div>
+
+					<div class="schedule-block">
+						<div class="schedule-time">11:00 - 11:05 AM</div>
+						<div class="schedule-title">🎒 Prepare for Gym</div>
+						<div class="schedule-details">Gather gym bag (towel, water, phone with PT app). Use bathroom. Walk to car with Mindy.</div>
+					</div>
+
+					<div class="schedule-block">
+						<div class="schedule-time">11:05 - 11:20 AM</div>
+						<div class="schedule-title">🚗 Travel to Gym</div>
+						<div class="schedule-details">15-minute drive. Sit, relax, listen to music.</div>
+					</div>
+
+					<div class="schedule-block">
+						<div class="schedule-time">11:20 AM - 12:20 PM</div>
+						<div class="schedule-title">💪 PHYSICAL THERAPY AT GYM</div>
+						<div class="schedule-details">10 min warm-up (recumbent bike) → 15 min active → 5 min cool-down → Rest 5 min → 1 hour strength training. Remember: Movement is SAFE. You're retraining your nervous system!</div>
+					</div>
+
+					<div class="schedule-block">
+						<div class="schedule-time">12:20 - 12:35 PM</div>
+						<div class="schedule-title">🚗 Travel Home</div>
+						<div class="schedule-details">15-minute drive. Acknowledge: You exercised and you're safe!</div>
+					</div>
+
+					<div class="schedule-block rest">
+						<div class="schedule-time">12:35 - 1:05 PM</div>
+						<div class="schedule-title">🛏️ LYING DOWN REST #2</div>
+						<div class="schedule-details">CRITICAL post-exercise recovery. Lie flat, drink water. NO phone - body needs full recovery.</div>
+					</div>
+
+					<h3>Midday Block (1:05 PM - 5:00 PM)</h3>
+
+					<div class="schedule-block meal">
+						<div class="schedule-time">1:05 - 1:50 PM</div>
+						<div class="schedule-title">🥗 Lunch</div>
+						<div class="schedule-details">Substantial PCOS & gout-friendly meal. Examples: Chicken quinoa bowl, turkey wrap, lentil soup.</div>
+					</div>
+
+					<div class="schedule-block">
+						<div class="schedule-time">1:50 - 2:05 PM</div>
+						<div class="schedule-title">🚶 Post-Meal Movement & Kitchen Help</div>
+						<div class="schedule-details">10-minute gentle walk. Help clean dishes (sit and dry).</div>
+					</div>
+
+					<div class="schedule-block rest">
+						<div class="schedule-time">2:05 - 2:35 PM</div>
+						<div class="schedule-title">🛏️ LYING DOWN REST #3</div>
+						<div class="schedule-details">Post-meal rest. Lie flat, set timer.</div>
+					</div>
+
+					<div class="schedule-block">
+						<div class="schedule-time">2:35 - 3:35 PM</div>
+						<div class="schedule-title">🎨 OT & Creative Time (SITTING)</div>
+						<div class="schedule-details">First 30 min: OT exercises. Second 30 min: Art OR reading aloud.</div>
+					</div>
+
+					<div class="schedule-block rest">
+						<div class="schedule-time">3:35 - 4:05 PM</div>
+						<div class="schedule-title">🛏️ LYING DOWN REST #4</div>
+						<div class="schedule-details">Afternoon rest. Lie flat, set timer.</div>
+					</div>
+
+					<div class="schedule-block">
+						<div class="schedule-time">4:05 - 5:00 PM</div>
+						<div class="schedule-title">✨ Light Cleaning OR Creative Activity</div>
+						<div class="schedule-details">Help with light cleaning OR continue art project OR gentle stretching.</div>
+					</div>
+
+					<h3>Evening Block (5:00 PM - 10:00 PM)</h3>
+
+					<div class="schedule-block meal">
+						<div class="schedule-time">5:00 - 5:45 PM</div>
+						<div class="schedule-title">🍽️ Dinner</div>
+						<div class="schedule-details">Help Mindy prep. Eat dinner. FINISH BY 6:00 PM!</div>
+					</div>
+
+					<div class="schedule-block">
+						<div class="schedule-time">5:45 - 6:00 PM</div>
+						<div class="schedule-title">🧹 Post-Meal Movement & Cleanup</div>
+						<div class="schedule-details">10-minute walk. Help clean up.</div>
+					</div>
+
+					<div class="schedule-block rest">
+						<div class="schedule-time">6:00 - 6:30 PM</div>
+						<div class="schedule-title">🛏️ LYING DOWN REST #5</div>
+						<div class="schedule-details">Post-meal/cleanup rest. Lie flat for digestion.</div>
+					</div>
+
+					<div class="schedule-block">
+						<div class="schedule-time">6:30 - 7:00 PM</div>
+						<div class="schedule-title">🚿 Evening Personal Hygiene</div>
+						<div class="schedule-details">Shower OR wash face/freshen up. Full hygiene routine.</div>
+					</div>
+
+					<div class="schedule-block rest">
+						<div class="schedule-time">7:00 - 7:30 PM</div>
+						<div class="schedule-title">🛏️ LYING DOWN REST #6</div>
+						<div class="schedule-details">Post-hygiene rest. Lie flat, set timer.</div>
+					</div>
+
+					<div class="schedule-block">
+						<div class="schedule-time">7:30 - 8:30 PM</div>
+						<div class="schedule-title">📚 Evening Activity (SITTING) 📵 NO SCREENS AFTER 8 PM</div>
+						<div class="schedule-details">Art, reading aloud, audio book, conversation with Mindy. Dim lights at 8 PM.</div>
+					</div>
+
+					<div class="schedule-block rest">
+						<div class="schedule-time">8:30 - 9:00 PM</div>
+						<div class="schedule-title">🛏️ LYING DOWN REST #7</div>
+						<div class="schedule-details">Pre-bedtime rest. Practice gratitude (3 things).</div>
+					</div>
+
+					<div class="schedule-block rest">
+						<div class="schedule-time">9:00 - 9:30 PM</div>
+						<div class="schedule-title">🛏️ LYING DOWN REST #8</div>
+						<div class="schedule-details">Continue resting. Can read while lying down.</div>
+					</div>
+
+					<div class="schedule-block">
+						<div class="schedule-time">9:30 - 10:00 PM</div>
+						<div class="schedule-title">🌙 Evening Wind-Down</div>
+						<div class="schedule-details">Bathroom, brush teeth (2 min), floss, wash face, wash feet, breathing exercises, prepare bedroom for sleep.</div>
+					</div>
+
+					<div class="alert-box" style="border-color: #4caf50; background: #e8f5e9;">
+						<h4 style="color: #2e7d32; margin: 0 0 0.5rem 0;">💚 Gym Day Totals</h4>
+						<p style="margin: 0;"><strong>Lying Down Rest:</strong> 4 hours (8 periods) - Need 2 more 30-min periods</p>
+						<p style="margin: 0;"><strong>Exercise:</strong> 1.5 hours gym PT + 30 min post-meal = 2 hours ✓</p>
+						<p style="margin: 0;"><strong>Last eating time:</strong> 6:00 PM</p>
+					</div>
+				`;
+			} else if (day === 'Sunday') {
+				html = `
+					<div class="card" style="background: linear-gradient(135deg, #9c27b0, #ab47bc); color: white; text-align: center;">
+						<h3 style="color: white; margin: 0;">⛪ Sunday Schedule (Church & Rest Day)</h3>
+						<p style="margin: 0.5rem 0 0 0; opacity: 0.95;">Your lightest day - church, family time, and extra rest</p>
+					</div>
+
+					<h3>Morning (8:30 AM - 11:30 AM)</h3>
+
+					<div class="schedule-block">
+						<div class="schedule-time">8:30 - 9:00 AM</div>
+						<div class="schedule-title">🌅 Wake Up & Morning Personal Care</div>
+						<div class="schedule-details">Take extra time to prepare for church. Dress in church clothes. Extra attention to hair.</div>
+					</div>
+
+					<div class="schedule-block meal">
+						<div class="schedule-time">9:00 - 9:45 AM</div>
+						<div class="schedule-title">🍳 Breakfast</div>
+						<div class="schedule-details">Same as other days - Mindy has this ready.</div>
+					</div>
+
+					<div class="schedule-block">
+						<div class="schedule-time">9:45 - 10:00 AM</div>
+						<div class="schedule-title">🚶 Post-Meal Movement</div>
+						<div class="schedule-details">10-minute gentle walk. Help clean up.</div>
+					</div>
+
+					<div class="schedule-block rest">
+						<div class="schedule-time">10:00 - 10:30 AM</div>
+						<div class="schedule-title">🛏️ LYING DOWN REST #1</div>
+						<div class="schedule-details">Post-meal rest.</div>
+					</div>
+
+					<div class="schedule-block">
+						<div class="schedule-time">10:30 - 10:50 AM</div>
+						<div class="schedule-title">🧘 Exercise: Gentle Movement</div>
+						<div class="schedule-details">20 minutes: Very light activity. Gentle stretching, slow walk, light yoga. Very low intensity (rest day!).</div>
+					</div>
+
+					<div class="schedule-block rest">
+						<div class="schedule-time">10:50 - 11:20 AM</div>
+						<div class="schedule-title">🛏️ LYING DOWN REST #2</div>
+						<div class="schedule-details">Post-exercise rest.</div>
+					</div>
+
+					<div class="schedule-block">
+						<div class="schedule-time">11:20 - 11:30 AM</div>
+						<div class="schedule-title">🎒 Final Church Preparation</div>
+						<div class="schedule-details">Gather items: scriptures, water bottle, small snack. Use bathroom. Walk to car with Mindy.</div>
+					</div>
+
+					<h3>Church (11:30 AM - 1:30 PM)</h3>
+
+					<div class="schedule-block">
+						<div class="schedule-time">11:30 AM - 1:30 PM</div>
+						<div class="schedule-title">⛪ Church Services & Fellowship</div>
+						<div class="schedule-details">2 hours of sitting/standing/social interaction. Low-intensity but can be exhausting. Bring water bottle. You'll rest after!</div>
+					</div>
+
+					<h3>Afternoon & Evening (1:30 PM - 10:00 PM)</h3>
+
+					<div class="schedule-block rest">
+						<div class="schedule-time">1:30 - 2:00 PM</div>
+						<div class="schedule-title">🛏️ LYING DOWN REST #3</div>
+						<div class="schedule-details">CRITICAL post-church recovery. Social interaction is very draining.</div>
+					</div>
+
+					<div class="schedule-block meal">
+						<div class="schedule-time">2:00 - 2:45 PM</div>
+						<div class="schedule-title">🥗 Lunch</div>
+						<div class="schedule-details">Substantial meal. Eat with Mindy.</div>
+					</div>
+
+					<div class="schedule-block">
+						<div class="schedule-time">2:45 - 3:00 PM</div>
+						<div class="schedule-title">🚶 Post-Meal Movement</div>
+						<div class="schedule-details">10-minute gentle walk. Help clean up.</div>
+					</div>
+
+					<div class="schedule-block rest">
+						<div class="schedule-time">3:00 - 3:30 PM</div>
+						<div class="schedule-title">🛏️ LYING DOWN REST #4</div>
+						<div class="schedule-details">Post-meal rest.</div>
+					</div>
+
+					<div class="schedule-block">
+						<div class="schedule-time">3:30 - 4:30 PM</div>
+						<div class="schedule-title">📖 Restful Activity (SITTING)</div>
+						<div class="schedule-details">Scripture study, journaling, light reading OR help Mindy with meal prep OR art time. Keep it calm!</div>
+					</div>
+
+					<div class="schedule-block rest">
+						<div class="schedule-time">4:30 - 5:00 PM</div>
+						<div class="schedule-title">🛏️ LYING DOWN REST #5</div>
+						<div class="schedule-details">Afternoon rest.</div>
+					</div>
+
+					<div class="schedule-block meal">
+						<div class="schedule-time">5:00 - 6:00 PM</div>
+						<div class="schedule-title">🍽️ Dinner</div>
+						<div class="schedule-details">Help Mindy, eat dinner (FINISH BY 6 PM!), post-meal walk (10 min), help cleanup.</div>
+					</div>
+
+					<div class="schedule-block rest">
+						<div class="schedule-time">6:00 - 6:30 PM</div>
+						<div class="schedule-title">🛏️ LYING DOWN REST #6</div>
+						<div class="schedule-details">Post-meal/cleanup rest.</div>
+					</div>
+
+					<div class="schedule-block">
+						<div class="schedule-time">6:30 - 7:30 PM</div>
+						<div class="schedule-title">🎲 Family Game Time!</div>
+						<div class="schedule-details">30-45 minutes: Card games or board games with Mindy's family. Sit at table, enjoy family time. This is FUN but uses social energy!</div>
+					</div>
+
+					<div class="schedule-block rest">
+						<div class="schedule-time">7:30 - 8:00 PM</div>
+						<div class="schedule-title">🛏️ LYING DOWN REST #7</div>
+						<div class="schedule-details">Post-game recovery. Social activity is tiring even when fun!</div>
+					</div>
+
+					<div class="schedule-block">
+						<div class="schedule-time">8:00 - 8:30 PM</div>
+						<div class="schedule-title">📚 Evening Reflection (SITTING) 📵 NO SCREENS AFTER 8 PM</div>
+						<div class="schedule-details">Scripture study, gratitude journaling, review the week, set intentions for Monday. Calm, reflective activities.</div>
+					</div>
+
+					<div class="schedule-block rest">
+						<div class="schedule-time">8:30 - 9:00 PM</div>
+						<div class="schedule-title">🛏️ LYING DOWN REST #8</div>
+						<div class="schedule-details">Pre-bedtime rest. Gratitude (3 things). Calm mind for sleep.</div>
+					</div>
+
+					<div class="schedule-block rest">
+						<div class="schedule-time">9:00 - 9:30 PM</div>
+						<div class="schedule-title">🛏️ LYING DOWN REST #9</div>
+						<div class="schedule-details">Continue resting. Can read while lying down.</div>
+					</div>
+
+					<div class="schedule-block">
+						<div class="schedule-time">9:30 - 10:00 PM</div>
+						<div class="schedule-title">🌙 Evening Wind-Down</div>
+						<div class="schedule-details">Bathroom, teeth, face, feet, breathing, remove compression socks, bedroom prep.</div>
+					</div>
+
+					<div class="alert-box" style="border-color: #9c27b0; background: #f3e5f5;">
+						<h4 style="color: #7b1fa2; margin: 0 0 0.5rem 0;">💜 Sunday Totals</h4>
+						<p style="margin: 0;"><strong>Lying Down Rest:</strong> 4.5 hours (9 periods) - Need 1.5 more hours</p>
+						<p style="margin: 0;"><strong>Exercise:</strong> 20 min gentle + 30 min post-meal = 50 minutes (lightest day)</p>
+						<p style="margin: 0;"><strong>Special:</strong> Church (2 hrs sitting) + Family Game Time!</p>
+					</div>
+				`;
+			} else {
+				html = `
+					<div class="card" style="background: linear-gradient(135deg, #2196f3, #42a5f5); color: white; text-align: center;">
+						<h3 style="color: white; margin: 0;">🏠 Home Exercise Day Schedule</h3>
+						<p style="margin: 0.5rem 0 0 0; opacity: 0.95;">Light PT maintenance at home - 6 exercise bursts throughout the day</p>
+					</div>
+
+					<h3>Morning Block (8:30 AM - 12:30 PM)</h3>
+					
+					<div class="schedule-block">
+						<div class="schedule-time">8:30 - 9:00 AM</div>
+						<div class="schedule-title">🌅 Wake Up & Morning Personal Care</div>
+						<div class="schedule-details">✓ Compression socks first ✓ Bathroom ✓ Wash face ✓ Brush teeth (2 min) ✓ Comb hair ✓ Get dressed ✓ Apply deodorant ✓ Drink 16 oz water</div>
+					</div>
+
+					<div class="schedule-block meal">
+						<div class="schedule-time">9:00 - 9:45 AM</div>
+						<div class="schedule-title">🍳 Breakfast (Mindy has this ready)</div>
+						<div class="schedule-details">PCOS & gout-friendly, egg-free meal. Examples: Steel-cut oats with berries, smoothie bowl, avocado toast.</div>
+					</div>
+
+					<div class="schedule-block">
+						<div class="schedule-time">9:45 - 10:00 AM</div>
+						<div class="schedule-title">🚶 Post-Meal Movement & Kitchen Help</div>
+						<div class="schedule-details">10-minute gentle walk OR calf raises, squats, light stretching. Help Mindy clean up.</div>
+					</div>
+
+					<div class="schedule-block rest">
+						<div class="schedule-time">10:00 - 10:30 AM</div>
+						<div class="schedule-title">🛏️ LYING DOWN REST #1</div>
+						<div class="schedule-details">Complete rest, lying flat. Set timer for 30 minutes. NO screens - just rest.</div>
+					</div>
+
+					<div class="schedule-block">
+						<div class="schedule-time">10:30 - 10:50 AM</div>
+						<div class="schedule-title">💪 EXERCISE BURST #1: Bodyweight Strength</div>
+						<div class="schedule-details">20 minutes: Wall push-ups, chair squats, standing leg lifts, arm circles, heel raises. Do each exercise for 2 minutes, rest 1 minute between. Movement is SAFE!</div>
+					</div>
+
+					<div class="schedule-block rest">
+						<div class="schedule-time">10:50 - 11:20 AM</div>
+						<div class="schedule-title">🛏️ LYING DOWN REST #2</div>
+						<div class="schedule-details">Post-exercise rest. Lie flat, drink water. Set timer.</div>
+					</div>
+
+					<div class="schedule-block">
+						<div class="schedule-time">11:20 - 11:35 AM</div>
+						<div class="schedule-title">💬 Speech Therapy Exercises (SITTING)</div>
+						<div class="schedule-details">Follow your speech therapy app. Reading aloud, vocal exercises, breathing techniques.</div>
+					</div>
+
+					<div class="schedule-block">
+						<div class="schedule-time">11:35 - 11:55 AM</div>
+						<div class="schedule-title">💪 EXERCISE BURST #2: Cardio Intervals</div>
+						<div class="schedule-details">20 minutes: March in place (2 min) → Side steps (2 min) → Arm movements (2 min). Repeat 3 times. Keep it gentle but keep moving!</div>
+					</div>
+
+					<div class="schedule-block rest">
+						<div class="schedule-time">11:55 AM - 12:25 PM</div>
+						<div class="schedule-title">🛏️ LYING DOWN REST #3</div>
+						<div class="schedule-details">Post-exercise rest. Lie flat, set timer.</div>
+					</div>
+
+					<div class="schedule-block">
+						<div class="schedule-time">12:25 - 12:30 PM</div>
+						<div class="schedule-title">🚶 Quick Movement Break</div>
+						<div class="schedule-details">5-minute gentle walk or stretching before lunch.</div>
+					</div>
+
+					<h3>Midday Block (12:30 PM - 6:00 PM)</h3>
+
+					<div class="schedule-block meal">
+						<div class="schedule-time">12:30 - 1:15 PM</div>
+						<div class="schedule-title">🥗 Lunch</div>
+						<div class="schedule-details">Substantial PCOS & gout-friendly meal. Examples: Chicken quinoa bowl, turkey wrap, lentil soup.</div>
+					</div>
+
+					<div class="schedule-block">
+						<div class="schedule-time">1:15 - 1:30 PM</div>
+						<div class="schedule-title">🚶 Post-Meal Movement & Kitchen Help</div>
+						<div class="schedule-details">10-minute gentle walk. Help clean dishes (sit and dry).</div>
+					</div>
+
+					<div class="schedule-block rest">
+						<div class="schedule-time">1:30 - 2:00 PM</div>
+						<div class="schedule-title">🛏️ LYING DOWN REST #4</div>
+						<div class="schedule-details">Post-meal rest. Lie flat, set timer.</div>
+					</div>
+
+					<div class="schedule-block">
+						<div class="schedule-time">2:00 - 2:20 PM</div>
+						<div class="schedule-title">💪 EXERCISE BURST #3: Gentle Walk or Yoga</div>
+						<div class="schedule-details">20 minutes: EITHER gentle walk around the block OR chair yoga (neck rolls, shoulder stretches, seated twists, breathing). Choose what feels good today.</div>
+					</div>
+
+					<div class="schedule-block rest">
+						<div class="schedule-time">2:20 - 2:50 PM</div>
+						<div class="schedule-title">🛏️ LYING DOWN REST #5</div>
+						<div class="schedule-details">Post-exercise rest. Lie flat, set timer.</div>
+					</div>
+
+					<div class="schedule-block">
+						<div class="schedule-time">2:50 - 3:50 PM</div>
+						<div class="schedule-title">🎨 OT & Creative Time (SITTING)</div>
+						<div class="schedule-details">First 30 min: OT exercises. Second 30 min: Art OR reading aloud.</div>
+					</div>
+
+					<div class="schedule-block rest">
+						<div class="schedule-time">3:50 - 4:20 PM</div>
+						<div class="schedule-title">🛏️ LYING DOWN REST #6</div>
+						<div class="schedule-details">Afternoon rest. Lie flat, set timer.</div>
+					</div>
+
+					<div class="schedule-block">
+						<div class="schedule-time">4:20 - 5:15 PM</div>
+						<div class="schedule-title">✨ Light Cleaning OR Creative Activity</div>
+						<div class="schedule-details">Help with light cleaning OR continue art project OR gentle stretching. Keep it calm and low-energy.</div>
+					</div>
+
+					<div class="schedule-block rest">
+						<div class="schedule-time">5:15 - 5:45 PM</div>
+						<div class="schedule-title">🛏️ LYING DOWN REST #7</div>
+						<div class="schedule-details">Pre-dinner rest. Lie flat, set timer.</div>
+					</div>
+
+					<h3>Evening Block (5:45 PM - 10:00 PM)</h3>
+
+					<div class="schedule-block meal">
+						<div class="schedule-time">5:45 - 6:30 PM</div>
+						<div class="schedule-title">🍽️ Dinner</div>
+						<div class="schedule-details">Help Mindy prep. Eat dinner. FINISH BY 6:00 PM!</div>
+					</div>
+
+					<div class="schedule-block">
+						<div class="schedule-time">6:30 - 6:45 PM</div>
+						<div class="schedule-title">🧹 Post-Meal Movement & Cleanup</div>
+						<div class="schedule-details">10-minute walk. Help clean up.</div>
+					</div>
+
+					<div class="schedule-block rest">
+						<div class="schedule-time">6:45 - 6:55 PM</div>
+						<div class="schedule-title">🛏️ LYING DOWN REST #8</div>
+						<div class="schedule-details">Quick 10-minute rest before exercise.</div>
+					</div>
+
+					<div class="schedule-block">
+						<div class="schedule-time">6:55 - 7:15 PM</div>
+						<div class="schedule-title">💪 EXERCISE BURST #4: Resistance Bands</div>
+						<div class="schedule-details">20 minutes: Seated or standing band exercises. Arm pulls, leg presses, shoulder work. Light resistance, slow and controlled movements.</div>
+					</div>
+
+					<div class="schedule-block rest">
+						<div class="schedule-time">7:15 - 7:40 PM</div>
+						<div class="schedule-title">🛏️ LYING DOWN REST #9</div>
+						<div class="schedule-details">Post-exercise rest. Lie flat, set timer.</div>
+					</div>
+
+					<div class="schedule-block">
+						<div class="schedule-time">7:40 - 8:00 PM</div>
+						<div class="schedule-title">💪 EXERCISE BURST #5: Stretching/Restorative Yoga</div>
+						<div class="schedule-details">20 minutes: Gentle stretching. Focus on breathing, slow movements, releasing tension. This is CALM exercise to prepare for sleep.</div>
+					</div>
+
+					<div class="schedule-block">
+						<div class="schedule-time">8:00 - 8:25 PM</div>
+						<div class="schedule-title">📚 Evening Activity (SITTING) 📵 NO SCREENS AFTER 8 PM</div>
+						<div class="schedule-details">Art, reading aloud, audio book, conversation with Mindy. Dim lights at 8 PM. Keep it calm.</div>
+					</div>
+
+					<div class="schedule-block">
+						<div class="schedule-time">8:25 - 8:45 PM</div>
+						<div class="schedule-title">💪 EXERCISE BURST #6: Gentle Movement/Tai Chi</div>
+						<div class="schedule-details">20 minutes: Very gentle flowing movements OR slow walking OR simple tai chi moves. This is the GENTLEST exercise of the day. Wind down for sleep.</div>
+					</div>
+
+					<div class="schedule-block rest">
+						<div class="schedule-time">8:45 - 9:15 PM</div>
+						<div class="schedule-title">🛏️ LYING DOWN REST #10</div>
+						<div class="schedule-details">Final rest before bedtime routine. Lie flat, practice gratitude (3 things).</div>
+					</div>
+
+					<div class="schedule-block">
+						<div class="schedule-time">9:15 - 9:45 PM</div>
+						<div class="schedule-title">🚿 Evening Personal Hygiene</div>
+						<div class="schedule-details">Shower OR wash face/freshen up. Bathroom, brush teeth (2 min), floss, wash face, wash feet. Full evening hygiene routine.</div>
+					</div>
+
+					<div class="schedule-block">
+						<div class="schedule-time">9:45 - 10:00 PM</div>
+						<div class="schedule-title">🌙 Evening Wind-Down</div>
+						<div class="schedule-details">Final bathroom check, breathing exercises, remove compression socks, set out for morning, prepare bedroom for sleep.</div>
+					</div>
+
+					<div class="alert-box" style="border-color: #2196f3; background: #e3f2fd;">
+						<h4 style="color: #1976d2; margin: 0 0 0.5rem 0;">💙 Home Day Totals</h4>
+						<p style="margin: 0;"><strong>Lying Down Rest:</strong> 5 hours (10 periods) ✓ COMPLETE!</p>
+						<p style="margin: 0;"><strong>Exercise:</strong> 6 bursts x 20 min = 2 hours ✓ COMPLETE!</p>
+						<p style="margin: 0;"><strong>Speech/OT:</strong> Included in schedule ✓</p>
+						<p style="margin: 0;"><strong>Last eating time:</strong> 6:00 PM ✓</p>
+					</div>
+				`;
+			}
+
+			scheduleContent.innerHTML = html;
+		}
+
+
         // Initialize schedule page
         const dayButtons = document.querySelectorAll('.day-button');
         dayButtons.forEach(button => {

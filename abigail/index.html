@@ -1383,7 +1383,7 @@
         }
 
         // Initialize tracker checkboxes
-        const trackerData = {
+        const trackerChecklists = {
             'morning-checks': [
                 'Compression socks put on FIRST',
                 'Used bathroom properly',
@@ -1436,9 +1436,9 @@
             ]
         };
 
-        Object.keys(trackerData).forEach(category => {
+        Object.keys(trackerChecklists).forEach(category => {
             const container = document.getElementById(category);
-            trackerData[category].forEach((item, index) => {
+            trackerChecklists[category].forEach((item, index) => {
                 const div = document.createElement('div');
                 div.className = 'checkbox-item';
                 const id = `${category}-${index}`;
