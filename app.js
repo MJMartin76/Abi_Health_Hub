@@ -180,32 +180,31 @@ async function loadTrackerDataForDate() {
 		
 		container.innerHTML = '';
 		
-		trackerData[category].forEach((item, index) => {
+		trackerData[category].forEach((item) => {
 			const div = document.createElement('div');
 			div.className = 'checkbox-item';
-			const id = `${category}-${index}`;
-			const isChecked = savedData && savedData[item.key];
-
-			if (isChecked) {
-				div.classList.add('checked');
-			}
+			const id = `check_item-${item.key}`;
+			div.id = id;
+			const key = item.key;
 
 			div.innerHTML = `
-				<input type="checkbox" id="${id}" ${isChecked ? 'checked' : ''} />
+				<input type="checkbox" />
 				<label for="${id}">${item.label}</label>
 			`;
 
-			const checkbox = div.querySelector('input');
-			checkbox.addEventListener('change', async (e) => {
-				if (e.target.checked) {
-					div.classList.add('checked');
-				} else {
-					div.classList.remove('checked');
+			div.addEventListener('click', async (e) => {
+				const currentValue = getChecklistValue(key);
+				const newValue = !currentValue;
+				setChecklistValue(key, newValue);
+				updateChecklistItem(id, newValue);
+				if (newValue) {
+					renderConfetti(e);
 				}
 				await saveTrackerData();
 			});
 
 			container.appendChild(div);
+			updateChecklistItem(id, getChecklistValue(key));
 		});
 	});
 
@@ -222,12 +221,34 @@ async function loadTrackerDataForDate() {
     updateCalorieTotal();
 }
 
+function getChecklistValue(key) {
+	return TRACKER_DATA[currentTrackerDate][key];
+}
+function setChecklistValue(key, value) {
+	return TRACKER_DATA[currentTrackerDate][key] = value;
+}
+
+function updateChecklistItem(id, isChecked) {
+	const div = document.getElementById(id);
+	div.className = 'checkbox-item';
+	const input = div.querySelector('input');
+
+	if (isChecked) {
+		div.classList.add('checked');
+		input.checked = true;
+	}
+	else {
+		div.classList.remove('checked');
+		input.checked = false;
+	}
+}
+
 async function saveTrackerData() {
     const data = {};
     
 	Object.keys(trackerData).forEach(category => {
-		trackerData[category].forEach((item, index) => {
-			const checkbox = document.getElementById(`${category}-${index}`);
+		trackerData[category].forEach((item) => {
+			const checkbox = document.querySelector(`#check_item-${item.key} input`);
 			if (checkbox) {
 				data[item.key] = checkbox.checked;
 			}
@@ -260,7 +281,6 @@ const inputDebounceTime = 1000;
 let saveTrackerTimeout = null;
 function debounceSaveTrackerData() {
 	if (saveTrackerTimeout) return;
-	console.log("setting timeout")
 	saveTrackerTimeout = setTimeout(async () => {
 		await saveTrackerData();
 		saveTrackerTimeout = null;
@@ -1110,4 +1130,39 @@ function showSchedule(day) {
     }
 
     scheduleContent.innerHTML = html;
+}
+
+
+const CONFETTI_DURATION = 1100;
+
+function renderConfetti(event = null) {
+	let x = '50%';
+	let y = '50%';
+
+	// compute element center
+	if (event.clientX && event.clientY) {
+		x = String(event.clientX) + 'px';
+		y = String(event.clientY) + 'px';
+	}
+	else if (event?.target) {
+		const rect = event.target.getBoundingClientRect();
+		const elLeft = rect.x;
+		const elTop = rect.y;
+		x = String(elLeft + rect.width / 2) + 'px';
+		y = String(elTop + rect.height / 2) + 'px';
+	}
+
+	const img = document.createElement('img');
+	img.src = 'confetti.gif';
+	img.width = 150;
+	img.style.position = 'fixed';
+	img.style.top = String(y);
+	img.style.left = String(x);
+	img.style.translate = '-25% -65%';
+	img.style.pointerEvents = 'none';
+
+	img.onload = () => {
+		document.body.appendChild(img);
+		setTimeout(() => img.remove(), CONFETTI_DURATION);
+	}
 }
