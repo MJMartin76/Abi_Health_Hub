@@ -85,8 +85,119 @@
         </main>
     </div>
 
+    <script src="AirtableService.js"></script>
     <script src="app.js"></script>
     <script>
+		async function loadProgressData() {
+			await loadTrackerData();
+
+			const allData = [];
+			const trackerKeys = Object.keys(TRACKER_DATA);
+			for (const key of trackerKeys) {
+				const record = TRACKER_DATA[key];
+				if (record) {
+					allData.push({ date: record.date, data: record });
+				}
+			}
+
+			allData.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+			// Calculate overall stats
+			let totalDays = allData.length;
+			let totalChecked = 0;
+			let totalPossible = 0;
+			let daysWithAllMeals = 0;
+			let daysInCalorieRange = 0;
+
+			allData.forEach(entry => {
+				totalPossible += countTotal();
+				totalChecked += countChecked(entry.data);
+
+				if (entry.data) {
+					const hasAllMeals = entry.data.breakfast_cal && 
+									entry.data.lunch_cal && 
+									entry.data.dinner_cal;
+					if (hasAllMeals) daysWithAllMeals++;
+
+					const total = calculateTotalCalories(entry.data);
+					if (total >= 1800 && total <= 2200) daysInCalorieRange++;
+				}
+			});
+
+			const completionRate = totalPossible > 0 ? Math.round((totalChecked / totalPossible) * 100) : 0;
+
+			// Display overall stats
+			const statsContainer = document.getElementById('overall-stats');
+			if (statsContainer) {
+				statsContainer.innerHTML = `
+					<div class="stat-card">
+						<div class="stat-number">${totalDays}</div>
+						<div class="stat-label">Days Tracked</div>
+					</div>
+					<div class="stat-card">
+						<div class="stat-number">${completionRate}%</div>
+						<div class="stat-label">Task Completion</div>
+					</div>
+					<div class="stat-card">
+						<div class="stat-number">${daysWithAllMeals}</div>
+						<div class="stat-label">Days with All Meals</div>
+					</div>
+					<div class="stat-card">
+						<div class="stat-number">${daysInCalorieRange}</div>
+						<div class="stat-label">Days in Calorie Range</div>
+					</div>
+				`;
+			}
+
+			// Last 7 days
+			const last7 = allData.slice(0, 7);
+			const weekContainer = document.getElementById('week-history');
+			if (weekContainer) {
+				if (last7.length === 0) {
+					weekContainer.innerHTML = '<p style="color: #666;">No data for the last 7 days</p>';
+				} else {
+					weekContainer.innerHTML = last7.map(entry => {
+						const checked = countChecked(entry.data);
+						const total = countTotal(entry.data);
+						const percent = total > 0 ? Math.round((checked / total) * 100) : 0;
+						return `
+							<div class="saved-journal">
+								<h4>${new Date(entry.date + 'T12:00:00').toLocaleDateString('en-US', { 
+									weekday: 'long', month: 'short', day: 'numeric' 
+								})}</h4>
+								<p>Completed: ${checked} / ${total} tasks (${percent}%)</p>
+								${entry.data.calories ? `<p>Calories: ${calculateTotalCalories(entry.data)}</p>` : ''}
+							</div>
+						`;
+					}).join('');
+				}
+			}
+
+			// Last 30 days
+			const last30 = allData.slice(0, 30);
+			const monthContainer = document.getElementById('month-history');
+			if (monthContainer) {
+				if (last30.length === 0) {
+					monthContainer.innerHTML = '<p style="color: #666;">No data for the last 30 days</p>';
+				} else {
+					monthContainer.innerHTML = last30.map(entry => {
+						const checked = countChecked(entry.data);
+						const total = countTotal(entry.data);
+						const percent = total > 0 ? Math.round((checked / total) * 100) : 0;
+						return `
+							<div class="saved-journal">
+								<h4>${new Date(entry.date + 'T12:00:00').toLocaleDateString('en-US', { 
+									month: 'short', day: 'numeric', year: 'numeric' 
+								})}</h4>
+								<p>Completed: ${checked} / ${total} tasks (${percent}%)</p>
+								${entry.data.calories ? `<p>Calories: ${calculateTotalCalories(entry.data)}</p>` : ''}
+							</div>
+						`;
+					}).join('');
+				}
+			}
+		}
+
         // Load progress data when page loads
         loadProgressData();
     </script>

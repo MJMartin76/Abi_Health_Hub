@@ -72,8 +72,8 @@
                 <h3>📅 Select Date</h3>
                 <div class="date-picker">
                     <input type="date" id="journal-date" />
-                    <button onclick="loadJournalData()">Load This Date</button>
-                    <button onclick="setJournalToday()">Today</button>
+                    <button onclick="loadJournalDataForDate()">Load This Date</button>
+                    <button onclick="loadTodayJournal()">Today</button>
                 </div>
             </div>
 
@@ -96,38 +96,77 @@
         </main>
     </div>
 
+    <script src="AirtableService.js"></script>
     <script src="app.js"></script>
     <script>
         // Initialize journal
-        document.getElementById('journal-date').value = getTodayString();
-        setJournalToday();
-        loadRecentJournals();
+		let currentJournalDate = getTodayString();
+
+		async function initializeJournals() {
+			await loadJournalData();
+			await loadNotesData();
+			loadTodayJournal();
+			renderRecentJournals();
+		}
+
+		initializeJournals().catch(console.error);
+
+		function loadTodayJournal() {
+			currentJournalDate = getTodayString();
+			const dateInput = document.getElementById('journal-date');
+			if (dateInput) {
+				dateInput.value = currentJournalDate;
+			}
+			loadJournalDataForDate();
+		}
+
+		async function loadJournalDataForDate() {
+			const dateInput = document.getElementById('journal-date');
+			if (dateInput && dateInput.value) {
+				currentJournalDate = dateInput.value;
+			}
+
+			const displayDate = document.getElementById('journal-entry-date');
+			if (displayDate) {
+				displayDate.textContent = new Date(currentJournalDate + 'T12:00:00').toLocaleDateString('en-US', { 
+					weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' 
+				});
+			}
+
+			const savedJournal = JOURNAL_DATA[currentJournalDate];
+
+			const textArea = document.getElementById('journal-text');
+			if (textArea) {
+				textArea.value = savedJournal?.text || '';
+			}
+		}
 
         // Add event listener for checkbox
-        document.getElementById('show-weekly-notes').addEventListener('change', loadRecentJournals);
+        document.getElementById('show-weekly-notes').addEventListener('change', renderRecentJournals);
 
-        // Override the loadRecentJournals function to include weekly notes
-        async function loadRecentJournals() {
+        async function renderRecentJournals() {
             const showWeeklyNotes = document.getElementById('show-weekly-notes').checked;
-            const journalKeys = await listKeys('journal_');
             const journals = [];
 
-            for (const key of journalKeys) {
-                const data = await loadData(key);
-                if (data && data.text) {
-                    journals.push({ ...data, type: 'journal' });
+			const dates = Object.keys(JOURNAL_DATA);
+			const recentDates = dates.sort().reverse().slice(0, 14);
+
+            for (const day of recentDates) {
+				const record = JOURNAL_DATA[day];
+                if (record && record.text) {
+                    journals.push({ ...record, type: 'journal' });
                 }
             }
 
             // Also load weekly notes if checkbox is checked
             if (showWeeklyNotes) {
-                const weeklyKeys = await listKeys('weekly_notes_');
-                for (const key of weeklyKeys) {
-                    const data = await loadData(key);
-                    if (data) {
-                        journals.push({ ...data, type: 'weekly', date: data.weekStart });
-                    }
-                }
+				const noteKeys = Object.keys(NOTES_DATA);
+				for (const key of noteKeys) {
+					const record = NOTES_DATA[key];
+					if (record) {
+                        journals.push({ ...record, type: 'weekly', date: record.weekStart_sunday });
+					}
+				}
             }
 
             journals.sort((a, b) => new Date(b.date) - new Date(a.date));
@@ -186,6 +225,36 @@
                 }
             }).join('');
         }
+
+		async function saveJournal() {
+			const textArea = document.getElementById('journal-text');
+			if (!textArea) return;
+			const text = textArea.value;
+			await updateJournal(currentJournalDate, text);
+			alert('✅ Journal entry saved!');
+		}		
+
+		async function deleteJournal(date) {
+			if (confirm('Are you sure you want to delete this journal entry?')) {
+				await updateJournal(date, ''); // just empty the text
+				loadRecentJournals();
+			}
+		}
+		
+		async function updateJournal(date, text) {
+			const savedRecord = JOURNAL_DATA[date];
+			const newRecord = {
+				recordId: savedRecord?.recordId,
+				text,
+				date,
+			}
+			const [updatedRecord] = await AirtableService.upsertRecords(TABLES.JOURNAL, [newRecord]);
+			if (updatedRecord) {
+				JOURNAL_DATA[updatedRecord.date] = updatedRecord;
+			}
+
+			renderRecentJournals();
+		}
     </script>
 </body>
 </html>

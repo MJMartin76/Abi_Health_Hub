@@ -1,0 +1,109 @@
+document.write(
+    '<script src="https://cdn.jsdelivr.net/npm/airtable@0.11.4/lib/airtable.umd.min.js"></script>'
+);
+
+const BASE_ID = 'appFUYHViQUU0fu26';
+
+const TABLES = {
+    TRACKERS: 'tblrGFuwTXBPT1nR9',
+    JOURNAL: 'tblVPu2AG8KkhpXC2',
+    WEEKLY_NOTES: 'tblxtK0MO0FX7QBjO',
+};
+
+const BATCH_SIZE = 10;
+
+const AirtableService = {
+    isInitialized: false,
+
+    _init() {
+		// REQUIRES THE AIRTABLE SDK TO BE LOADED TO DOC PRIOR
+		const apiKey = this.getToken();
+        this._base = new Airtable({apiKey}).base(BASE_ID);
+        this.isInitialized = true;
+        return this._base;
+    },
+
+	getToken() {
+		return localStorage.getItem('airtable_token');
+	},
+
+	setToken(token) {
+		localStorage.setItem('airtable_token', token);
+		this._init();
+	},
+
+	async validateToken() {
+		try {
+			// should throw error if token is invalid
+			this._init();
+			const res = await new Promise((res, rej) => {
+				fetch(
+					`https://api.airtable.com/v0/meta/bases/${BASE_ID}/tables`,
+					{ headers: { 'Authorization': 'Bearer ' + this.getToken()} }
+				).then(res).catch(rej);
+			});
+			return res.ok;
+		}
+		catch (e) {
+			console.error(e)
+			return false;
+		}
+	},
+
+    get base() {
+        return this._base ?? this._init();
+    },
+
+	async loadTable(tableIdentifier, options = {}) {
+        return (await this.base(TABLES[tableIdentifier] || tableIdentifier).select(options).all()).map(this.recordToJs);
+	},
+
+    async upsertRecords(tableName, records) {
+		const toUpdate = records.filter(r => Boolean(r.recordId) === true);
+		const toCreate = records.filter(r => Boolean(r.recordId) === false);
+
+		let savedRecords = [];
+
+        await this.batchOperation(toUpdate.map(this.jsToRecord), async batch => {
+            savedRecords = savedRecords.concat(await this.base(TABLES[tableName] || tableName).update(batch));
+        });
+
+        await this.batchOperation(toCreate.map(this.jsToRecord), async batch => {
+            savedRecords = savedRecords.concat(await this.base(TABLES[tableName] || tableName).create(batch));
+        });
+
+		return savedRecords.map(this.recordToJs);
+    },
+
+    async batchOperation(records, op) {
+        if (records.length === 0) return [];
+
+        records = [...records];
+
+        let batches = [];
+        while (records.length > 0) {
+            batches.push(records.splice(0, BATCH_SIZE));
+        }
+        let res = await Promise.all(batches.map(op));
+        return res.flat(1);
+    },
+
+    jsToRecord(file) {
+		const id = file.recordId;
+		delete file.recordId;
+
+        return {
+            id,
+            fields: {
+               ...file,
+            }
+        }
+    },
+
+    recordToJs(record) {
+        return {
+            recordId: record.id || null,
+			...record.fields,
+        }
+    }
+};
