@@ -17,14 +17,12 @@ blurDiv.style.setProperty('z-index', '99999', 'important');
 async function verifyToken() {
 	try {
 		const isValid = await AirtableService.validateToken();
-		console.log(isValid)
 		if (!isValid) {
 			document.body.appendChild(blurDiv);
 			// allow DOM to re-render
 			await new Promise(res => setTimeout(res, 100));
 			document.body.style.overflow = "hidden";
 			const newToken = prompt('Please provide an access token');
-			alert(newToken)
 			AirtableService.setToken(newToken);
 		}
 		else {

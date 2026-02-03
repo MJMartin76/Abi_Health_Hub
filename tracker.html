@@ -237,9 +237,12 @@
 		}
 
 		function getChecklistValue(key) {
-			return TRACKER_DATA[currentTrackerDate][key];
+			return TRACKER_DATA[currentTrackerDate]?.[key];
 		}
 		function setChecklistValue(key, value) {
+			if (TRACKER_DATA[currentTrackerDate]) {
+				TRACKER_DATA[currentTrackerDate] = {};
+			}
 			return TRACKER_DATA[currentTrackerDate][key] = value;
 		}
 
